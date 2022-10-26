@@ -12,6 +12,9 @@ app = Flask(__name__)
 def root():
     return render_template("main.j2")
 
+@app.route('/pets')
+def pets():
+    return render_template("pets.j2")
 # Listener
 
 
