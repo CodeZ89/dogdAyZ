@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 
@@ -35,12 +34,12 @@
       <div class="table-title">
         <div class="row">
           <div class="col-sm-6">
-            <h2>Manage <b>Employees</b></h2>
+            <h2>Manage <b>Adopters</b></h2>
           </div>
           <div class="col-sm-6">
-            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
-            <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i
+            <a href="#addAdopterModal" class="btn btn-success" data-toggle="modal"><i
+                class="material-icons">&#xE147;</i> <span>Add New Adopter</span></a>
+            <a href="#deleteAdopterModal" class="btn btn-danger" data-toggle="modal"><i
                 class="material-icons">&#xE15C;</i> <span>Delete</span></a>
           </div>
         </div>
@@ -54,11 +53,16 @@
                 <label for="selectAll"></label>
               </span>
             </th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Actions</th>
+            <th>adopter_id</th>
+            <th>first_name</th>
+            <th>last_name</th>
+            <th>phone_number</th>
+            <th>email</th>
+            <th>city</th>
+            <th>state</th>
+            <th>number_of_pets</th>
+            <th>has_kid</th>
+            <th>looking_for</th>
           </tr>
         </thead>
         <tbody>
@@ -69,10 +73,16 @@
                 <label for="checkbox1"></label>
               </span>
             </td>
-            <td>Thomas Hardy</td>
-            <td>thomashardy@mail.com</td>
-            <td>89 Chiaroscuro Rd, Portland, USA</td>
-            <td>(171) 555-2222</td>
+            <td>1</td>
+            <td>Abby</td>
+            <td>Clarke</td>
+            <td>703-222-5555</td>
+            <td>abby@gmail.com</td>
+            <td>Washington</td>
+            <td>D.C.</td>
+            <td>1</td>
+            <td>FALSE</td>
+            <td>cat that loves other cats</td>
             <td>
               <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -87,14 +97,20 @@
                 <label for="checkbox2"></label>
               </span>
             </td>
-            <td>Dominique Perrier</td>
-            <td>dominiqueperrier@mail.com</td>
-            <td>Obere Str. 57, Berlin, Germany</td>
-            <td>(313) 555-5735</td>
+            <td>2</td>
+            <td>Zach</td>
+            <td>Chaloner</td>
+            <td>321-456-7890</td>
+            <td>zach@gmail.com</td>
+            <td>Portland</td>
+            <td>Maine</td>
+            <td>3</td>
+            <td>FALSE</td>
+            <td>fluffy dog</td>
             <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
+              <a href="#editAdopterModal" class="edit" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="#deleteAdopterModal" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -105,50 +121,20 @@
                 <label for="checkbox3"></label>
               </span>
             </td>
-            <td>Maria Anders</td>
-            <td>mariaanders@mail.com</td>
-            <td>25, rue Lauriston, Paris, France</td>
-            <td>(503) 555-9931</td>
+            <td>3</td>
+            <td>Scott</td>
+            <td>Irons</td>
+            <td>702-333-4444</td>
+            <td>scott@gmail.com</td>
+            <td>New York City</td>
+            <td>New York</td>
+            <td>1</td>
+            <td>FALSE</td>
+            <td>kitten</td>
             <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
+              <a href="#editAdopterModal" class="edit" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox4" name="options[]" value="1">
-                <label for="checkbox4"></label>
-              </span>
-            </td>
-            <td>Fran Wilson</td>
-            <td>franwilson@mail.com</td>
-            <td>C/ Araquil, 67, Madrid, Spain</td>
-            <td>(204) 619-5731</td>
-            <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox5" name="options[]" value="1">
-                <label for="checkbox5"></label>
-              </span>
-            </td>
-            <td>Martin Blank</td>
-            <td>martinblank@mail.com</td>
-            <td>Via Monte Bianco 34, Turin, Italy</td>
-            <td>(480) 631-2097</td>
-            <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="#deleteAdopterModal" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
