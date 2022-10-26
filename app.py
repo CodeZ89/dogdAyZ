@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return render_template("home.html")
+    return render_template("home.j2")
 
 
 @app.route('/pets')
@@ -20,7 +20,7 @@ def pets():
 
 @app.route('/adopters')
 def adopters():
-    return render_template("adopters.html")
+    return render_template("adopters.j2")
 
 
 @app.route('/fosters')
@@ -35,12 +35,12 @@ def shelters():
 
 @app.route('/foster_shelters')
 def foster_shelters():
-    return render_template("foster_shelters.html")
+    return render_template("foster_shelters.j2")
 
 
 @app.route('/adoption_records')
 def adoption_records():
-    return render_template("adoption_records.html")
+    return render_template("adoption_records.j2")
 # Listener
 
 
