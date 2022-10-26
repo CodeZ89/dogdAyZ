@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 
@@ -38,10 +37,10 @@
             <h2><b>Pets</b></h2>
           </div>
           <div class="col-sm-6">
-            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                class="material-icons">&#xE147;</i> <span>Add New Pet</span></a>
-            <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i
-                class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+            <a href="#addPetModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i>
+              <span>Add New Pet</span></a>
+            <a href="#deletePetModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i>
+              <span>Delete</span></a>
           </div>
         </div>
       </div>
@@ -88,9 +87,9 @@
             <td>Male</td>
             <td>FALSE</td>
             <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="#editPetModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+                  title="Edit">&#xE254;</i></a>
+              <a href="#deletePetModal" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -113,9 +112,9 @@
             <td>Female</td>
             <td>TRUE</td>
             <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="#editPetModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+                  title="Edit">&#xE254;</i></a>
+              <a href="#deletePetModal" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -138,9 +137,9 @@
             <td>Female</td>
             <td>TRUE</td>
             <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="#editPetModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+                  title="Edit">&#xE254;</i></a>
+              <a href="#deletePetModal" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -163,9 +162,9 @@
             <td>Male</td>
             <td>FALSE</td>
             <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="#editPetModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+                  title="Edit">&#xE254;</i></a>
+              <a href="#deletePetModal" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -188,9 +187,9 @@
             <td>Male</td>
             <td>FALSE</td>
             <td>
-              <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="#editPetModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+                  title="Edit">&#xE254;</i></a>
+              <a href="#deletePetModal" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -211,7 +210,7 @@
     </div>
   </div>
   <!-- Edit Modal HTML -->
-  <div id="addEmployeeModal" class="modal fade">
+  <div id="addPetModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
         <form>
@@ -221,19 +220,47 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
+              <label>Pet ID</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Foster ID</label>
+              <input type="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Shelter ID</label>
+              <textarea class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Type</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Weight</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Kid Friendly?</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
               <label>Name</label>
               <input type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Email</label>
-              <input type="email" class="form-control" required>
+              <label>Age</label>
+              <input type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Address</label>
-              <textarea class="form-control" required></textarea>
+              <label>Breed</label>
+              <input type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Phone</label>
+              <label>Gender</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Adopted?</label>
               <input type="text" class="form-control" required>
             </div>
           </div>
@@ -246,7 +273,7 @@
     </div>
   </div>
   <!-- Edit Modal HTML -->
-  <div id="editEmployeeModal" class="modal fade">
+  <div id="editPetModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
         <form>
@@ -256,19 +283,47 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
+              <label>Pet ID</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Foster ID</label>
+              <input type="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Shelter ID</label>
+              <textarea class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Type</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Weight</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Kid Friendly?</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
               <label>Name</label>
               <input type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Email</label>
-              <input type="email" class="form-control" required>
+              <label>Age</label>
+              <input type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Address</label>
-              <textarea class="form-control" required></textarea>
+              <label>Breed</label>
+              <input type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Phone</label>
+              <label>Gender</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Adopted?</label>
               <input type="text" class="form-control" required>
             </div>
           </div>
@@ -281,12 +336,12 @@
     </div>
   </div>
   <!-- Delete Modal HTML -->
-  <div id="deleteEmployeeModal" class="modal fade">
+  <div id="deletePetModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
         <form>
           <div class="modal-header">
-            <h4 class="modal-title">Delete Employee</h4>
+            <h4 class="modal-title">Delete Pet</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">

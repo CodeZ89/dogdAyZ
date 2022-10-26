@@ -20,7 +20,7 @@ def pets():
 
 @app.route('/adopters')
 def adopters():
-    return render_template("adopters.j2")
+    return render_template("adopters.html")
 
 
 @app.route('/fosters')
