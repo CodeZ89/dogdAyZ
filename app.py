@@ -10,7 +10,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return render_template("main.j2")
+    return render_template("home.html")
+
 
 @app.route('/pets')
 def pets():
