@@ -9,6 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
+
   {% block title %}
   {% endblock %}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
@@ -30,38 +31,78 @@
     crossorigin="anonymous"></script>
   {% block scripts %}
   {% endblock %}
+  <div class="container">
+    <div class="row">
+      <div class="col-2">
+        <img src="https://cf.ltkcdn.net/dogs/images/orig/235430-2000x1332-australian-shepherd-puppy.jpg"
+          class="img-fluid">
+      </div>
+      <div class="col-3">
+        <img
+          src="https://bestlifeonline.com/wp-content/uploads/sites/3/2019/12/gold.jpg?quality=82&strip=1&resize=640%2C360"
+          class="img-fluid">
+      </div>
+      <div class="col-2">
+        <img src="https://d.newsweek.com/en/full/1970093/labrador-puppy.jpg" class="img-fluid">
+      </div>
 
-  <header>PetBook</header>
-  <main>
-    <h2>Home Page</h2>
-    <section>
-      <p>
-        PetBook: A Centralized Rescue Database for Underserved Shelters Across the US
+      <div class="col-3">
+        <img src="https://bestlifeonline.com/wp-content/uploads/sites/3/2019/12/jump.jpg" class="img-fluid">
+      </div>
 
-        PetBook is a centralized database where a user may find animals that are available for adoption across the
-        United States. In 2021, PetBook assisted in the rehoming of more than 2000 pets to approximately 1500 families,
-        from hard to reach shelters across the country. PetBook also assists these shelters with finding eligible foster
-        parents for animals that are unable to be housed at the shelter's home location. Currently PetBook works with
-        over 100 shelters and 250 active foster homes across the US. PetBook uses a matchmaking algorithm to match pets
-        to potential adopters, and adopters to potential pets. A database driven website that will record and facilitate
-        the adoption of Pets that are available across the country in Shelters and Fosters (foster homes), and keep
-        record of the families/people that may want to become Adopters.
-      </p>
-      <p><b>Pets:</b></a>
-        An entity that records the pets that are currently in the database and available for adoption.</p>
-      <p><b>Adopters:</b>
-        An entity that contains information about potential and repeat adopters</p>
-      <p><b>Fosters:</b>
-        An entity that records the relevant information for current homes that pets are being fostered</p>
-      <p><b>Shelters:</b>
-        An entity that records the current shelters and their locations that are working with PetBook</p>
-      <p><b>Foster's Shelters:</b>
-        An intersection table that matches current fosters to the shelters that they are associated</p>
-      <p><b>Adoption Records:</b>
-        An entity that maintains the records of which pets have been adopted, the ID of the person that adopted them,
-        and if the pet has been returned</p>
-    </section>
-  </main>
+      <div class="col-2">
+        <img src="https://www.paws.org/wp-content/uploads/2019/12/reka-dora-TzjMd7i5WQI-unsplash-1500x900.jpg"
+          class="img-fluid">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="text-left w-80 p-3">
+      <h1 class="display-1">PetBook</h1>
+      <main>
+
+        <section>
+          <p class="display-5">
+            PetBook: A Centralized Rescue Database for Underserved Shelters Across the US
+
+          <p>PetBook is a centralized database where a user may find animals that are available for adoption across
+            the
+            United States. In 2021, PetBook assisted in the rehoming of more than 2000 pets to approximately 1500
+            families,
+            from hard to reach shelters across the country. PetBook also assists these shelters with finding eligible
+            foster
+            parents for animals that are unable to be housed at the shelter's home location. Currently PetBook works
+            with
+            over 100 shelters and 250 active foster homes across the US. PetBook uses a matchmaking algorithm to match
+            pets
+            to potential adopters, and adopters to potential pets. A database driven website that will record and
+            facilitate
+            the adoption of Pets that are available across the country in Shelters and Fosters (foster homes), and
+            keep
+            record of the families/people that may want to become Adopters.
+          </p>
+          </p>
+          <p><b>Pets:</b>
+            An entity that records the pets that are currently in the database and available for adoption.</p>
+          <p><b>Adopters:</b>
+            An entity that contains information about potential and repeat adopters</p>
+          <p><b>Fosters:</b>
+            An entity that records the relevant information for current homes that pets are being fostered</p>
+          <p><b>Shelters:</b>
+            An entity that records the current shelters and their locations that are working with PetBook</p>
+          <p><b>Foster's Shelters:</b>
+            An intersection table that matches current fosters to the shelters that they are associated</p>
+          <p><b>Adoption Records:</b>
+            An entity that maintains the records of which pets have been adopted, the ID of the person that adopted
+            them,
+            and if the pet has been returned</p>
+        </section>
+      </main>
+    </div>
+
+  </div>
 </body>
 
 </html>
