@@ -10,27 +10,33 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home |</a>
+                    <a id="root" class="nav-link" href="/">Home |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('pets')}}">Pets |</a>
+                    <a id="pets" class="nav-link" href="{{url_for('pets')}}">Pets |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('adopters')}}"> Adopters |</a>
+                    <a id="adopters" class="nav-link" href="{{url_for('adopters')}}"> Adopters |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('fosters')}}">Fosters |</a>
+                    <a id="fosters" class="nav-link" href="{{url_for('fosters')}}">Fosters |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('shelters')}}">Shelters |</a>
+                    <a id="shelters" class="nav-link" href="{{url_for('shelters')}}">Shelters |</a>
                 </li>
                 <li class=" nav-item">
-                    <a class="nav-link" href="{{url_for('foster_shelters')}}">Foster's Shelters |</a>
+                    <a id="foster_shelters" class="nav-link" href="{{url_for('foster_shelters')}}">Foster's Shelters |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('adoption_records')}}">Adoption Records</a>
+                    <a id="adoption_records" class="nav-link" href="{{url_for('adoption_records')}}">Adoption Records</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+<script>
+    $(document).ready(function () {
+        $("#{{request.endpoint}}").attr('aria-current', 'page');
+        $("#{{request.endpoint}}").addClass("active");
+    })
+</script>
