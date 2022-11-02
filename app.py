@@ -15,7 +15,7 @@ def root():
 
 @app.route('/pets')
 def pets():
-    return render_template("pets.j2")
+    return render_template("pets.html")
 
 
 @app.route('/adopters')
