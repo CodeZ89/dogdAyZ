@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">PetBook</a>
+        <a class="navbar-brand mb-0-h1" href="/">PetBook</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,32 +10,36 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a id="root" class="nav-link" href="/">Home |</a>
+                    <a id="root" class="nav-link navbar-brand mb-0-h1" href="/">Home |</a>
                 </li>
                 <li class="nav-item">
-                    <a id="pets" class="nav-link" href="{{url_for('pets')}}">Pets |</a>
+                    <a id="pets" class="nav-link navbar-brand mb-0-h1" href="{{url_for('pets')}}">Pets |</a>
                 </li>
                 <li class="nav-item">
-                    <a id="adopters" class="nav-link" href="{{url_for('adopters')}}"> Adopters |</a>
-                </li>
-                <li class="nav-item">
-                    <a id="fosters" class="nav-link" href="{{url_for('fosters')}}">Fosters |</a>
-                </li>
-                <li class="nav-item">
-                    <a id="shelters" class="nav-link" href="{{url_for('shelters')}}">Shelters |</a>
-                </li>
-                <li class=" nav-item">
-                    <a id="foster_shelters" class="nav-link" href="{{url_for('foster_shelters')}}">Foster's Shelters
+                    <a id="adopters" class="nav-link navbar-brand mb-0-h1" href="{{url_for('adopters')}}"> Adopters
                         |</a>
                 </li>
                 <li class="nav-item">
-                    <a id="adoption_records" class="nav-link" href="{{url_for('adoption_records')}}">Adoption
+                    <a id="fosters" class="nav-link navbar-brand mb-0-h1" href="{{url_for('fosters')}}">Fosters |</a>
+                </li>
+                <li class="nav-item">
+                    <a id="shelters" class="nav-link navbar-brand mb-0-h1" href="{{url_for('shelters')}}">Shelters |</a>
+                </li>
+                <li class=" nav-item">
+                    <a id="foster_shelters" class="nav-link navbar-brand mb-0-h1"
+                        href="{{url_for('foster_shelters')}}">Foster's Shelters
+                        |</a>
+                </li>
+                <li class="nav-item">
+                    <a id="adoption_records" class="nav-link navbar-brand mb-0-h1"
+                        href="{{url_for('adoption_records')}}">Adoption
                         Records</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
 <script>
     $(document).ready(function () {
         $("#{{request.endpoint}}").attr('aria-current', 'page');
