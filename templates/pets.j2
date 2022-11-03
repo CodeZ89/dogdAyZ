@@ -278,15 +278,15 @@
                       <div class="col-md-4">
                         <h5>Kid Friendly:</h5>
                         <div class="form-check form-check">
-                          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                          <input class="form-check-input" type="radio" id="inlineCheckbox1" value="option1" name="kid_friendly">
                           <label class="form-check-label" for="inlineCheckbox1">Yes</label>
                         </div>
                         <div class="form-check form-check">
-                          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                          <input class="form-check-input" type="radio" id="inlineCheckbox2" value="option2" name="kid_friendly">
                           <label class="form-check-label" for="inlineCheckbox2">No</label>
                         </div>
                         <div class="form-check form-check">
-                          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2">
+                          <input class="form-check-input" type="radio" id="inlineCheckbox3" value="option2" name="kid_friendly">
                           <label class="form-check-label" for="inlineCheckbox3">Doesn't Matter</label>
                         </div>
                       </div>
@@ -376,8 +376,8 @@
             <div class="form-group">
               <label>Kid Friendly?</label>
               <select>
-                <option>TRUE</option>
-                <option>FALSE</option>
+                <option>Yes</option>
+                <option>No</option>
               </select>
             </div>
             <div class="form-group">
@@ -394,13 +394,16 @@
             </div>
             <div class="form-group">
               <label>Gender</label>
-              <input type="text" class="form-control" required>
+              <select>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
             </div>
             <div class="form-group">
               <label>Adopted?</label>
               <select>
-                <option>FALSE</option>
-                <option>TRUE</option>
+                <option>No</option>
+                <option>Yes</option>
 
               </select>
             </div>
