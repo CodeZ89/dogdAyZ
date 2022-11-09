@@ -66,42 +66,26 @@
           <div class="col-sm-6">
             <a href="#addFosterModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i>
               <span>Add New Foster</span></a>
-            <a href="#deleteFosterModal" class="btn btn-danger" data-toggle="modal"><i
-                class="material-icons">&#xE15C;</i>
-              <span>Delete</span></a>
           </div>
         </div>
       </div>
       <table class="table table-striped table-hover">
+      {% if data %}
         <thead>
           <tr>
-            <th>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="selectAll">
-                <label for="selectAll"></label>
-              </span>
-            </th>
-            <th>Foster ID</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Phone Number</th>
-            <th>Name</th>
-            <th>Actions</th>
+            {% for key in data[0].keys() %}
+          <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {{ key }}
+          </th>
+            {% endfor %}
           </tr>
         </thead>
         <tbody>
+        {% for item in data %}
           <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                <label for="checkbox1"></label>
-              </span>
-            </td>
-            <td>1</td>
-            <td>Portland</td>
-            <td>Maine</td>
-            <td>838-424-8903</td>
-            <td>Chris Van</td>
+            {% for key in item.keys() %}
+            <td> {{item[key]}}</td>
+            {% endfor %}
             <td>
               <a href="#editFosterModal" class="edit" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -109,44 +93,9 @@
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
-          <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox2" name="options[]" value="1">
-                <label for="checkbox2"></label>
-              </span>
-            </td>
-            <td>2</td>
-            <td>Washington</td>
-            <td>D.C.</td>
-            <td>903-820-0077</td>
-            <td>James Cole</td>
-            <td>
-              <a href="#editFosterModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteFosterModal" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox3" name="options[]" value="1">
-                <label for="checkbox3"></label>
-              </span>
-            </td>
-            <td>3</td>
-            <td>New York City</td>
-            <td>New York</td>
-            <td>701-770-8294</td>
-            <td>Michael Curry</td>
-            <td>
-              <a href="#editFosterModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteFosterModal" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-          </tr>
+          {% endfor %}
+          {% endif %}
+          
         </tbody>
       </table>
     </div>

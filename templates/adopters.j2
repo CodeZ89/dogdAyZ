@@ -63,56 +63,31 @@
       <div class="table-title">
         <div class="row">
           <div class="col-sm-6">
-            <h2>Adopters</h2>
+            <h2><b>Adopters</b></h2>
           </div>
           <div class="col-sm-6">
             <a href="#addAdopterModal" class="btn btn-success" data-toggle="modal"><i
                 class="material-icons">&#xE147;</i> <span>Add New Adopter</span></a>
-            <a href="#deleteAdopterModal" class="btn btn-danger" data-toggle="modal"><i
-                class="material-icons">&#xE15C;</i> <span>Delete</span></a>
           </div>
         </div>
       </div>
       <table class="table table-striped table-hover">
+      {% if data %}
         <thead>
           <tr>
-            <th>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="selectAll">
-                <label for="selectAll"></label>
-              </span>
-            </th>
-            <th>Adopter ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Number of Pets</th>
-            <th>Has kids?</th>
-            <th>Looking for?</th>
-            <th>Actions</th>
+          {% for key in data[0].keys() %}
+          <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {{ key }}
+          </th>
+            {% endfor %}
           </tr>
         </thead>
         <tbody>
+        {% for item in data %}
           <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                <label for="checkbox1"></label>
-              </span>
-            </td>
-            <td>1</td>
-            <td>Abby</td>
-            <td>Clarke</td>
-            <td>703-222-5555</td>
-            <td>abby@gmail.com</td>
-            <td>Washington</td>
-            <td>D.C.</td>
-            <td>1</td>
-            <td>FALSE</td>
-            <td>cat that loves other cats</td>
+          {% for key in item.keys() %}
+            <td> {{item[key]}}</td>
+            {% endfor %}
             <td>
               <a href="#editAdopterModal" class="edit" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -120,54 +95,9 @@
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
-          <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox2" name="options[]" value="1">
-                <label for="checkbox2"></label>
-              </span>
-            </td>
-            <td>2</td>
-            <td>Zach</td>
-            <td>Chaloner</td>
-            <td>321-456-7890</td>
-            <td>zach@gmail.com</td>
-            <td>Portland</td>
-            <td>Maine</td>
-            <td>3</td>
-            <td>FALSE</td>
-            <td>fluffy dog</td>
-            <td>
-              <a href="#editAdopterModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteAdopterModal" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="custom-checkbox">
-                <input type="checkbox" id="checkbox3" name="options[]" value="1">
-                <label for="checkbox3"></label>
-              </span>
-            </td>
-            <td>3</td>
-            <td>Scott</td>
-            <td>Irons</td>
-            <td>702-333-4444</td>
-            <td>scott@gmail.com</td>
-            <td>New York City</td>
-            <td>New York</td>
-            <td>1</td>
-            <td>FALSE</td>
-            <td>kitten</td>
-            <td>
-              <a href="#editAdopterModal" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteAdopterModal" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-          </tr>
+          {% endfor %}
+          {% endif %}
+          
         </tbody>
       </table>
     </div>
