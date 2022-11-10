@@ -83,9 +83,17 @@ def shelters():
 
     return render_template("shelters.j2", data=data)
 
-"""
-@app.route("/edit_shelter/<int:shelter_id>", methods=["POST"])
+
+@app.route("/edit_shelter/<int:shelter_id>", methods=["POST", "GET"])
 def edit_shelter(shelter_id):
+    if request.method == "GET":
+        query = "SELECT * FROM Shelters WHERE shelter_id = %s" %(shelter_id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        return render_template("edit_shelter.j2", data=data)
+    
     if request.method == "POST":
         if request.form.get("Edit_Shelter"):
             shelter_id = request.form["shelter_id"]
@@ -96,14 +104,13 @@ def edit_shelter(shelter_id):
             number_of_pets = request.form["shelter_number_pet"]
             number_of_pets_foster = request.form["shelter_number_foster"]
 
-            query = "UPDATE Shelters SET Shelters.city = %s, Shelters.state = %s, Shelters.phone_number = %s, Shelters.name = %s, Shelters.number_of_pets = %s,"\ 
-            "Shelters.number_of_pets_foster = %s WHERE Shelters.shelter_id = %s"
+            query = "UPDATE Shelters SET Shelters.city = %s, Shelters.state = %s, Shelters.phone_number = %s, Shelters.name = %s, Shelters.number_of_pets = %s, Shelters.number_of_pets_foster = %s WHERE Shelters.shelter_id = %s"
             cur = mysql.connection.cursor()
             cur.execute(query, (city, state, phone_number, name, number_of_pets, number_of_pets_foster, shelter_id))
             mysql.connection.commit()
         
             return redirect("/shelters")
- """   
+  
     
     
     
@@ -144,5 +151,5 @@ def adoption_records():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 4346))
+    port = int(os.environ.get('PORT', 9112))
     app.run(port=port, debug=True)
