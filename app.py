@@ -24,7 +24,7 @@ mysql = MySQL(app)
 def root():
     return render_template("home.j2")
 
-
+# Pets page routes
 @app.route('/pets', methods=["GET"])
 def pets():
     if request.method == "GET":
@@ -35,7 +35,7 @@ def pets():
 
     return render_template("pets.j2", data=data)
 
-
+# Adopters page routes
 @app.route('/adopters', methods=["GET"])
 def adopters():
     if request.method == "GET":
@@ -46,7 +46,7 @@ def adopters():
 
     return render_template("adopters.j2", data=data)
 
-
+# Fosters page routes
 @app.route('/fosters', methods=["GET"])
 def fosters():
     if request.method == "GET":
@@ -57,7 +57,17 @@ def fosters():
 
     return render_template("fosters.j2", data=data)
 
+@app.route("/delete_foster/<int:foster_id>")
+def delete_foster(foster_id):
 
+    query = "DELETE FROM Fosters WHERE foster_id = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (foster_id,))
+    mysql.connection.commit()
+
+    return redirect("/fosters")
+
+# Shelters page routes
 @app.route('/shelters', methods=["POST", "GET"])
 def shelters():
     if request.method == "POST":
@@ -125,7 +135,7 @@ def delete_shelter(shelter_id):
 
     return redirect("/shelters")
 
-
+# Foster-shelters page routes
 @app.route('/foster_shelters', methods=["GET"])
 def foster_shelters():
     if request.method == "GET":
@@ -136,7 +146,7 @@ def foster_shelters():
 
     return render_template("foster_shelters.j2", data=data)
 
-
+# adoption records page routes
 @app.route('/adoption_records', methods=["GET"])
 def adoption_records():
     if request.method == "GET":
