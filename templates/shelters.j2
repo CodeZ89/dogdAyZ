@@ -89,9 +89,9 @@
             <td> {{item[key]}}</td>
             {% endfor %}
             <td>
-              <a href="#editShelterModal" class="edit" data-toggle="modal"><i class="material-icons"
+              <a href="edit_shelter/{{item.shelter_id}}" class="edit" data-toggle="modal" data-target="#editShelterModal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteShelterModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="delete_shelter/{{item.shelter_id}}" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -151,48 +151,44 @@
   <div id="editShelterModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form>
+        <form id="editShelter" action="/shelters" method="POST">
           <div class="modal-header">
             <h4 class="modal-title">Edit Shelter</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Shelter ID</label>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
+              <input type="hidden" value="{{data[0].shelter_id}}" class="form-control" id="shelter_id" name="shelter_id" required>
             </div>
             <div class="form-group">
               <label>City</label>
-              <input type="email" class="form-control" required>
+              <input type="text" value="{{data[0].city}}" class="form-control" id="shelter_city" name="shelter_city" required>
             </div>
             <div class="form-group">
               <label>State</label>
-              <textarea class="form-control" required></textarea>
+              <input type="text" value="{{data[0].state}}" class="form-control" id="shelter_state" name="shelter_state" required>
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="text" class="form-control" required>
+              <input type="tel" value="{{data[0].phone_number}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="shelter_phone" id="shelter_phone" required>
+              <small>Format: 123-456-7890</small>
             </div>
             <div class="form-group">
               <label>Name</label>
-              <input type="text" class="form-control" required>
+              <input type="text" value="{{data[0].name}}" class="form-control" id="shelter_name" name="shelter_name" required>
             </div>
             <div class="form-group">
               <label>Number of Pets</label>
-              <input type="number" class="form-control" required>
+              <input type="number" value="{{data[0].number_of_pets}}" class="form-control" id="shelter_number_pet" name="shelter_number_pet" required>
             </div>
             <div class="form-group">
               <label>Number of Pets in Foster Homes</label>
-              <input type="number" class="form-control" required>
+              <input type="number" value="{{data[0].number_of_pets_foster}}" class="form-control" id="shelter_number_foster" name="shelter_number_foster" required>
             </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-info" value="Save">
+            <input type="submit" class="btn btn-info" value="Save" name="Edit_Shelter">
           </div>
         </form>
       </div>
@@ -213,7 +209,7 @@
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-danger" value="Delete">
+            <input type="submit" class="btn btn-danger" value="Delete" name="Delete_Shelter">
           </div>
         </form>
       </div>
