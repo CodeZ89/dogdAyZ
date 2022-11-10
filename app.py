@@ -3,6 +3,7 @@ from flask import Flask, render_template, json, redirect
 from flask_mysqldb import MySQL
 from flask import request
 
+
 # Configuration
 
 app = Flask(__name__)
@@ -57,7 +58,7 @@ def fosters():
     return render_template("fosters.j2", data=data)
 
 
-@app.route('/shelters', methods=["POST","GET"])
+@app.route('/shelters', methods=["POST", "GET"])
 def shelters():
     if request.method == "POST":
         if request.form.get("Add_Shelter"):
@@ -70,7 +71,8 @@ def shelters():
 
             query = "INSERT INTO Shelters (city, state, phone_number, name, number_of_pets, number_of_pets_foster) VALUES (%s, %s, %s, %s, %s, %s)"
             cur = mysql.connection.cursor()
-            cur.execute(query, (city,state, phone, name, number_of_pets, number_of_pets_foster))
+            cur.execute(query, (city, state, phone, name,
+                        number_of_pets, number_of_pets_foster))
             mysql.connection.commit()
 
         return redirect("/shelters")
@@ -87,13 +89,13 @@ def shelters():
 @app.route("/edit_shelter/<int:shelter_id>", methods=["POST", "GET"])
 def edit_shelter(shelter_id):
     if request.method == "GET":
-        query = "SELECT * FROM Shelters WHERE shelter_id = %s" %(shelter_id)
+        query = "SELECT * FROM Shelters WHERE shelter_id = %s" % (shelter_id)
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
 
         return render_template("edit_shelter.j2", data=data)
-    
+
     if request.method == "POST":
         if request.form.get("Edit_Shelter"):
             shelter_id = request.form["shelter_id"]
@@ -106,19 +108,16 @@ def edit_shelter(shelter_id):
 
             query = "UPDATE Shelters SET Shelters.city = %s, Shelters.state = %s, Shelters.phone_number = %s, Shelters.name = %s, Shelters.number_of_pets = %s, Shelters.number_of_pets_foster = %s WHERE Shelters.shelter_id = %s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (city, state, phone_number, name, number_of_pets, number_of_pets_foster, shelter_id))
+            cur.execute(query, (city, state, phone_number, name,
+                        number_of_pets, number_of_pets_foster, shelter_id))
             mysql.connection.commit()
-        
+
             return redirect("/shelters")
-  
-    
-    
-    
-    
+
 
 @app.route("/delete_shelter/<int:shelter_id>")
 def delete_shelter(shelter_id):
-    
+
     query = "DELETE FROM Shelters WHERE shelter_id = '%s';"
     cur = mysql.connection.cursor()
     cur.execute(query, (shelter_id,))
