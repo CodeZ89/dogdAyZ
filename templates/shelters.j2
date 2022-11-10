@@ -66,11 +66,13 @@
             <h2><b>Shelters</b></h2>
           </div>
           <div class="col-sm-6">
+          <!--Add shelter button, pop-up for input to add new shelter-->
             <a href="#addShelterModal" class="btn btn-success" data-toggle="modal"><i
                 class="material-icons">&#xE147;</i> <span>Add New Shelter</span></a>
           </div>
         </div>
       </div>
+      <!--Table with current shelters generated from database-->
       <table class="table table-striped table-hover">
       {% if data %}
         <thead>
