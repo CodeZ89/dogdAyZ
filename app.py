@@ -57,8 +57,24 @@ def fosters():
     return render_template("fosters.j2", data=data)
 
 
-@app.route('/shelters', methods=["GET"])
+@app.route('/shelters', methods=["POST","GET"])
 def shelters():
+    if request.method == "POST":
+        if request.form.get("Add_Shelter"):
+            city = request.form["shelter_city"]
+            state = request.form["shelter_state"]
+            phone = request.form["shelter_phone"]
+            name = request.form["shelter_name"]
+            number_of_pets = request.form["shelter_number_pet"]
+            number_of_pets_foster = request.form["shelter_number_foster"]
+
+            query = "INSERT INTO Shelters (city, state, phone_number, name, number_of_pets, number_of_pets_foster) VALUES (%s, %s, %s, %s, %s, %s)"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (city,state, phone, name, number_of_pets, number_of_pets_foster))
+            mysql.connection.commit()
+
+        return redirect("/shelters")
+
     if request.method == "GET":
         query = "SELECT * FROM Shelters"
         cur = mysql.connection.cursor()
@@ -66,6 +82,15 @@ def shelters():
         data = cur.fetchall()
 
     return render_template("shelters.j2", data=data)
+
+@app.route("/delete_shelter/<int:shelter_id>")
+def delete_shelter(shelter_id):
+    query = "DELETE FROM Shelters WHERE shelter_id = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (shelter_id,))
+    mysql.connection.commit()
+
+    return redirect("/shelters")
 
 
 @app.route('/foster_shelters', methods=["GET"])
@@ -92,5 +117,5 @@ def adoption_records():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 4346))
+    port = int(os.environ.get('PORT', 6969))
     app.run(port=port, debug=True)
