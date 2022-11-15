@@ -92,7 +92,7 @@
             <td>
               <a href="#editFosterShelterModal" class="edit" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteFosterFromShelterModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="delete_foster_shelter/{{item.shelter_id, item.foster_id}}" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -107,32 +107,32 @@
   <div id="addFosterToShelterModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form>
+        <form id="insertFosterShelter" action="/foster_shelters" method="POST">
           <div class="modal-header">
             <h4 class="modal-title">Add Foster Shelter Relationship</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Foster ID</label>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <label>Shelter</label>
+              <select id="shelter" name="shelter">
+              {% for shelter in shelter_data %}
+                <option value="{{ shelter['shelter_id']}}"> {{shelter['Shelter']}}</option>
+              {% endfor %}
               </select>
             </div>
             <div class="form-group">
-              <label>Shelter</label>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <label>Foster</label>
+              <select id="foster" name="foster">
+              {% for foster in foster_data %}
+                <option value="{{ foster['foster_id']}}"> {{foster['Foster']}}</option>
+              {% endfor %}
               </select>
             </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-success" value="Add">
+            <input type="submit" class="btn btn-success" value="Add" name="Add_Foster_Shelter">
           </div>
         </form>
       </div>

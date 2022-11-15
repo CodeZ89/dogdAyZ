@@ -178,15 +178,48 @@ def delete_shelter(shelter_id):
     return redirect("/shelters")
 
 # Foster-shelters page routes
-@app.route('/foster_shelters', methods=["GET"])
+@app.route('/foster_shelters', methods=["POST", "GET"])
 def foster_shelters():
     if request.method == "GET":
-        query = "SELECT * FROM Foster_shelters"
+        query = "SELECT Shelters.name AS Shelter, Fosters.name AS Foster FROM Foster_shelters JOIN Shelters ON Foster_shelters.shelter_id = Shelters.shelter_id JOIN Fosters ON Foster_shelters.foster_id = Fosters.foster_id ORDER BY Shelters.name ASC"
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
 
-    return render_template("foster_shelters.j2", data=data)
+        query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        shelter_data = cur.fetchall()
+
+        query3 = "SELECT Fosters.foster_id, CONCAT(Fosters.name, ', ID: ', Fosters.foster_id ) as Foster FROM Fosters"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        foster_data = cur.fetchall()
+
+        return render_template("foster_shelters.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
+    
+    if request.method == "POST":
+        if request.form.get("Add_Foster_Shelter"):
+            shelter_id = request.form["shelter"]
+            foster_id = request.form["foster"]
+
+            query = "INSERT INTO Foster_shelters (shelter_id, foster_id) VALUES (%s, %s)"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (shelter_id, foster_id))
+            mysql.connection.commit()
+
+        return redirect("/foster_shelters")
+    
+
+"""@app.route('/delete_foster_shelters/<int:(shelter_id, foster_id)>')
+def delete_foster_shelter(shelter_id, foster_id):
+    query = "DELETE FROM Foster_shelters WHERE shelter_id = '%s' AND foster_id = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (shelter_id, foster_id))
+    mysql.connection.commit()
+
+    return redirect("/foster_shelters")"""
+
 
 # adoption records page routes
 @app.route('/adoption_records', methods=["GET"])
