@@ -77,12 +77,12 @@ def fosters():
 @app.route("/edit_foster/<int:foster_id>", methods=["POST", "GET"])
 def edit_foster(foster_id):
     if request.method == "GET":
-        query = "SELECT * FROM Fosters WHERE foster_id = %s" %(foster_id)
+        query = "SELECT * FROM Fosters WHERE foster_id = %s" % (foster_id)
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
 
-        return render_template("fosters.j2", data=data)
+        return render_template("edit_foster.j2", data=data)
     
     if request.method == "POST":
         if request.form.get("Edit_Foster"):
@@ -94,7 +94,7 @@ def edit_foster(foster_id):
 
             query = "UPDATE Fosters SET Fosters.city = %s, Fosters.state = %s, Fosters.phone_number = %s, Fosters.name = %s WHERE Fosters.foster_id = %s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (city, state, phone_number, name))
+            cur.execute(query, (city, state, phone_number, name, foster_id))
             mysql.connection.commit()
 
             return redirect("/fosters")
