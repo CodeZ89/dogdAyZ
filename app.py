@@ -36,8 +36,28 @@ def pets():
     return render_template("pets.j2", data=data)
 
 # Adopters page routes
-@app.route('/adopters', methods=["GET"])
+@app.route('/adopters', methods=["POST", "GET"])
 def adopters():
+    if request.method == "POST":
+        if request.form.get("Add_Adopter"):
+            first_name = request.form["adopter_fname"]
+            last_name = request.form["adopter_lname"]
+            phone_number = request.form["adopter_phone"]
+            email = request.form["adopter_email"]
+            city = request.form["adopter_city"]
+            state = request.form["adopter_state"]
+            number_of_pets = request.form["number_of_pets"]
+            has_kid = request.form["has_kid"]
+            looking_for = request.form["looking_for"]
+
+            query = "INSERT INTO Adopters (first_name, last_name, phone_number, email, city, state, number_of_pets, has_kid, looking_for) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query, (first_name, last_name, phone_number, email, city, state, number_of_pets, has_kid, looking_for))
+            mysql.connection.commit()
+        
+        return redirect("/adopters")
+
     if request.method == "GET":
         query = "SELECT * FROM Adopters"
         cur = mysql.connection.cursor()
@@ -45,6 +65,45 @@ def adopters():
         data = cur.fetchall()
 
     return render_template("adopters.j2", data=data)
+
+@app.route("/edit_adopter/<int:adopter_id>", methods=["POST", "GET"])
+def edit_adopter(adopter_id):
+    if request.method == "GET":
+        query = "SELECT * FROM Adopters WHERE adopter_id = %s" % (adopter_id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        return render_template("edit_adopter.j2", data=data)
+    
+    if request.method == "POST":
+        if request.form.get("Edit_Adopter"):
+            first_name = request.form["adopter_fname"]
+            last_name = request.form["adopter_lname"]
+            phone_number = request.form["adopter_phone"]
+            email = request.form["adopter_email"]
+            city = request.form["adopter_city"]
+            state = request.form["adopter_state"]
+            number_of_pets = request.form["number_of_pets"]
+            has_kid = request.form["has_kid"]
+            looking_for = request.form["looking_for"]
+        
+        query = "UPDATE Adopters SET Adopters.first_name = %s, Adopters.last_name = %s,Adopters.phone_number = %s, Adopters.email = %s, Adopters.city = %s, Adopters.state = %s, Adopters.number_of_pets = %s, Adopters.has_kid = %s, Adopters.looking_for = %s WHERE Adopters.adopter_id = %s"
+        cur = mysql.connection.cursor()
+        cur.execute(query, (first_name, last_name, phone_number, email, city, state, number_of_pets, has_kid, looking_for, adopter_id))
+        mysql.connection.commit()
+
+        return redirect("/adopters")
+
+@app.route("/delete_adopter/<int:adopter_id>")
+def delete_adopter(adopter_id):
+
+    query = "DELETE FROM Adopters WHERE adopter_id = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (adopter_id,))
+    mysql.connection.commit()
+
+    return redirect("/adopters")
 
 # Fosters page routes
 
