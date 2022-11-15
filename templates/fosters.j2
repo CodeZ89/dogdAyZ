@@ -88,9 +88,9 @@
             <td> {{item[key]}}</td>
             {% endfor %}
             <td>
-              <a href="#editFosterModal" class="edit" data-toggle="modal"><i class="material-icons"
+              <a href="edit_foster/{{item.foster_id}}" class="edit" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="#deleteFosterModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="delete_foster/{{item.foster_id}}" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -105,7 +105,7 @@
   <div id="addFosterModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form>
+        <form id="insertFoster" action="/fosters" method="POST">
           <div class="modal-header">
             <h4 class="modal-title">Add Foster</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -113,63 +113,59 @@
           <div class="modal-body">
             <div class="form-group">
               <label>City</label>
-              <input type="text" class="form-control" required>
+              <input name="foster_city" id="foster_city" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>State</label>
-              <input type="text" class="form-control" required>
+              <input name="foster_state" id="foster_state" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="tel" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" required>
+              <input name="foster_phone" id="foster_phone" type="tel" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" required>
               <small>Format: 123-456-7890</small>
             </div>
             <div class="form-group">
               <label>Name</label>
-              <input type="text" class="form-control" required>
+              <input name="foster_name" id="foster_name" type="text" class="form-control" required>
             </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-success" value="Add">
+            <input name="Add_Foster" type="submit" class="btn btn-success" value="Add">
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- Edit Modal HTML -->
-  <div id="editFosterModal" class="modal fade">
+    <div id="editFosterModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form>
+        <form id="editFoster" action="/edit_foster{{data[0].id}}" method="POST">
           <div class="modal-header">
             <h4 class="modal-title">Edit Foster</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Foster ID</label>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
+              <input type="hidden" value="{{data[0].foster_id}}" class="form-control" id="foster_id" name="foster_id" required>
             </div>
             <div class="form-group">
               <label>City</label>
-              <input type="email" class="form-control" required>
+              <input type="text" value="{{data[0].city}}" class="form-control" id="foster_city" name="foster_city" required>
             </div>
             <div class="form-group">
               <label>State</label>
-              <textarea class="form-control" required></textarea>
+              <input type="text" value="{{data[0].state}}" class="form-control" id="foster_state" name="foster_state" required>
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="text" class="form-control" required>
+              <input type="tel" value="{{data[0].phone_number}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="foster_phone" id="foster_phone" required>
+              <small>Format: 123-456-7890</small>
             </div>
             <div class="form-group">
               <label>Name</label>
-              <input type="text" class="form-control" required>
+              <input type="text" value="{{data[0].name}}" class="form-control" id="foster_name" name="foster_name" required>
             </div>
           </div>
           <div class="modal-footer">

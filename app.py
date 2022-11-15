@@ -47,8 +47,25 @@ def adopters():
     return render_template("adopters.j2", data=data)
 
 # Fosters page routes
-@app.route('/fosters', methods=["GET"])
+
+# Read and Create Routes
+@app.route('/fosters', methods=["POST","GET"])
 def fosters():
+    if request.method == "POST":
+        if request.form.get("Add_Foster"):
+            city = request.form["foster_city"]
+            state = request.form["foster_state"]
+            phone_number = request.form["foster_phone"]
+            name = request.form["foster_name"]
+
+            query = "INSERT INTO Fosters (city, state, phone_number, name) VALUES (%s, %s, %s, %s)"
+
+            cur = mysql.connection.cursor()
+            cur.execute(query, (city, state, phone_number, name))
+            mysql.connection.commit()
+        
+        return redirect("/fosters")
+
     if request.method == "GET":
         query = "SELECT * FROM Fosters"
         cur = mysql.connection.cursor()
@@ -56,6 +73,31 @@ def fosters():
         data = cur.fetchall()
 
     return render_template("fosters.j2", data=data)
+
+@app.route("/edit_foster/<int:foster_id>", methods=["POST", "GET"])
+def edit_foster(foster_id):
+    if request.method == "GET":
+        query = "SELECT * FROM Fosters WHERE foster_id = %s" %(foster_id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        return render_template("fosters.j2", data=data)
+    
+    if request.method == "POST":
+        if request.form.get("Edit_Foster"):
+            foster_id = request.form["foster_id"]
+            city = request.form["foster_city"]
+            state = request.form["foster_state"]
+            phone_number = request.form["foster_phone"]
+            name = request.form["foster_name"]
+
+            query = "UPDATE Fosters SET Fosters.city = %s, Fosters.state = %s, Fosters.phone_number = %s, Fosters.name = %s WHERE Fosters.foster_id = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (city, state, phone_number, name))
+            mysql.connection.commit()
+
+            return redirect("/fosters")
 
 @app.route("/delete_foster/<int:foster_id>")
 def delete_foster(foster_id):
