@@ -65,12 +65,9 @@
           <div class="col-sm-10">
             <h2><b>Fosters working with Shelters</b></h2>
           </div>
-          <div class="col-sm-2">
-            <a href="#addFosterToShelterModal" class="btn btn-success" data-toggle="modal"><i
-                class="material-icons">&#xE147;</i> <span>Add Foster to Shelter</span></a>
-          </div>
         </div>
       </div>
+      <h3>Foster-Shelter relationship to be edited:</h3>
       <!--Intersection table containing information of the shelters that fosters are associated with-->
       <table class="table table-striped table-hover">
       {% if data %}
@@ -89,12 +86,6 @@
           {% for key in item.keys() %}
             <td> {{item[key]}}</td>
             {% endfor %}
-            <td>
-              <a href="edit_foster_shelter/{{item.foster_shelter_id}}" class="edit" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-              <a href="delete_foster_shelter/{{item.foster_shelter_id}}" class="delete" data-toggle="modal"><i class="material-icons"
-                  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
           </tr>
           {% endfor %}
           {% endif %}
@@ -103,97 +94,51 @@
       </table>
     </div>
   </div>
+  
   <!-- Edit Modal HTML -->
-  <div id="addFosterToShelterModal" class="modal fade">
-    <div class="modal-dialog">
+  <div id="editFosterShelterModal">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <form id="insertFosterShelter" action="/foster_shelters" method="POST">
-          <div class="modal-header">
-            <h4 class="modal-title">Add Foster Shelter Relationship</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label>Shelter</label>
-              <select id="shelter" name="shelter">
-              {% for shelter in shelter_data %}
-                <option value="{{ shelter['shelter_id']}}"> {{shelter['Shelter']}}</option>
-              {% endfor %}
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Foster</label>
-              <select id="foster" name="foster">
-              {% for foster in foster_data %}
-                <option value="{{ foster['foster_id']}}"> {{foster['Foster']}}</option>
-              {% endfor %}
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-success" value="Add" name="Add_Foster_Shelter">
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!-- Edit Modal HTML -->
-  <div id="editFosterShelterModal" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form>
+        <form id="insertFosterShelter" action="/edit_foster_shelter/{{data[0].foster_shelter_id}}" method="POST">
           <div class="modal-header">
             <h4 class="modal-title">Update Foster Shelter Relationship</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>Foster ID</label>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <input type="hidden" value="{{data[0].foster_shelter_id}}" class="form-control" id="foster_shelter_id" name="foster_shelter_id" required>
+              <label>Shelter</label>
+              <select class="form-control" id="shelter" name="shelter" placeholder="" required>
+              {% for shelter in shelter_data %}
+              {% if shelter['shelter_id'] == data[0].shelter_id %}
+                <option value="{{ shelter['shelter_id']}}" selected> {{shelter['Shelter']}}</option>
+            {% else %}
+                <option value="{{ shelter['shelter_id']}}"> {{shelter['Shelter']}}</option>
+                {% endif %}
+              {% endfor %}
               </select>
-            </div>
-            <div class="form-group">
-              <label>Shelter ID</label>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <label>Foster</label>
+              <select class="form-control" id="foster" name="foster" placeholder="" required>
+              {% for foster in foster_data %}
+              {% if foster['foster_id'] == data[0].foster_id %}
+                <option value="{{ foster['foster_id']}}" selected> {{foster['Foster']}}</option>
+            {% else %}
+                <option value="{{ foster['foster_id']}}"> {{foster['Foster']}}</option>
+                {% endif %}
+              {% endfor %}
               </select>
             </div>
           </div>
+
           <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-info" value="Save">
+            <a href="/foster_shelters"><input type="button" class="btn btn-default" value="Cancel"></a>
+            <a href="/foster_shelters"><input type="submit" class="btn btn-default" value="Save" name="Edit_Foster_Shelter"></a> 
           </div>
         </form>
       </div>
     </div>
   </div>
-  <!-- Delete Modal HTML -->
-  <div id="deleteFosterFromShelterModal" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form>
-          <div class="modal-header">
-            <h4 class="modal-title">Delete Foster Shelter Relationship</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to delete these Records?</p>
-            <p class="text-warning"><small>This action cannot be undone.</small></p>
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-danger" value="Delete">
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+ 
 
 </body>
 
