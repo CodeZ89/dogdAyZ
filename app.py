@@ -25,15 +25,46 @@ def root():
     return render_template("home.j2")
 
 # Pets page routes
-@app.route('/pets', methods=["GET"])
+@app.route('/pets', methods=["GET", "POST"])
 def pets():
     if request.method == "GET":
-        query = "SELECT * FROM Pets"
+        query = "SELECT Pets.pet_id AS PetID, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id"
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
 
-    return render_template("pets.j2", data=data)
+        query2 = "SELECT Shelters.shelter_id, Shelters.name AS Shelter from Shelters ORDER BY Shelters.name ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        shelter_data = cur.fetchall()
+
+        query3 = "SELECT Fosters.foster_id, Fosters.name AS Foster FROM Fosters"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        foster_data = cur.fetchall()
+
+        return render_template("pets.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
+    
+    if request.method == "POST":
+        if request.form.get("Add_Pet"):
+            shelter_id = request.form["shelter"]
+            foster_id = request.form["foster"]
+            type = request.form["type"]
+            weight = request.form["weight"]
+            is_kid_friendly = request.form["is_kid_friendly"]
+            name = request.form["name"]
+            age = request.form["age"]
+            breed = request.form["breed"]
+            gender = request.form["gender"]
+            is_adopted = request.form["is_adopted"]
+            
+            query = "INSERT INTO Pets (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted))
+            mysql.connection.commit()
+        
+        return redirect("/pets")
+
 
 # Adopters page routes
 @app.route('/adopters', methods=["POST", "GET"])
@@ -66,6 +97,7 @@ def adopters():
 
     return render_template("adopters.j2", data=data)
 
+# edit an adopter
 @app.route("/edit_adopter/<int:adopter_id>", methods=["POST", "GET"])
 def edit_adopter(adopter_id):
     if request.method == "GET":
@@ -95,6 +127,7 @@ def edit_adopter(adopter_id):
 
         return redirect("/adopters")
 
+# delete an adopter
 @app.route("/delete_adopter/<int:adopter_id>")
 def delete_adopter(adopter_id):
 
@@ -133,6 +166,7 @@ def fosters():
 
     return render_template("fosters.j2", data=data)
 
+# edit a foster
 @app.route("/edit_foster/<int:foster_id>", methods=["POST", "GET"])
 def edit_foster(foster_id):
     if request.method == "GET":
@@ -158,6 +192,7 @@ def edit_foster(foster_id):
 
             return redirect("/fosters")
 
+#delete a foster
 @app.route("/delete_foster/<int:foster_id>")
 def delete_foster(foster_id):
 
@@ -196,7 +231,7 @@ def shelters():
 
     return render_template("shelters.j2", data=data)
 
-
+# edit a shelter
 @app.route("/edit_shelter/<int:shelter_id>", methods=["POST", "GET"])
 def edit_shelter(shelter_id):
     if request.method == "GET":
@@ -225,7 +260,7 @@ def edit_shelter(shelter_id):
 
             return redirect("/shelters")
 
-
+# delete a shelter
 @app.route("/delete_shelter/<int:shelter_id>")
 def delete_shelter(shelter_id):
 
@@ -245,7 +280,7 @@ def foster_shelters():
         cur.execute(query)
         data = cur.fetchall()
 
-        query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC;"
+        query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ',ID: ', Shelters.shelter_id) AS Shelter FROM Shelters ORDER BY Shelters.name ASC;"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         shelter_data = cur.fetchall()
