@@ -28,7 +28,7 @@ def root():
 @app.route('/pets', methods=["GET", "POST"])
 def pets():
     if request.method == "GET":
-        query = "SELECT Pets.pet_id AS PetID, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id"
+        query = "SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id"
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -57,13 +57,70 @@ def pets():
             breed = request.form["breed"]
             gender = request.form["gender"]
             is_adopted = request.form["is_adopted"]
-            
-            query = "INSERT INTO Pets (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cur = mysql.connection.cursor()
-            cur.execute(query, (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted))
-            mysql.connection.commit()
+
+            if foster_id == "0":
+                query = "INSERT INTO Pets (shelter_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted))
+                mysql.connection.commit()
+
+            else:
+                query = "INSERT INTO Pets (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted))
+                mysql.connection.commit()
         
         return redirect("/pets")
+
+@app.route('/delete_pet/<int:pet_id>')
+def delete_pet(pet_id):
+    query = "DELETE FROM Pets WHERE pet_id = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (pet_id,))
+    mysql.connection.commit()
+
+    return redirect("/pets")
+
+@app.route('/edit_pet/<int:pet_id>', methods=["POST", "GET"])
+def edit_pet(pet_id):
+    if request.method == "GET":
+        query = "SELECT * FROM Pets WHERE pet_id = %s" % (pet_id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        query2 = "SELECT Shelters.shelter_id, Shelters.name AS Shelter from Shelters ORDER BY Shelters.name ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        shelter_data = cur.fetchall()
+
+        query3 = "SELECT Fosters.foster_id, Fosters.name AS Foster FROM Fosters"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        foster_data = cur.fetchall()
+
+        return render_template("edit_pet.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
+    
+    if request.method == "POST":
+        if request.form.get("Edit_Pet"):
+            pet_id = request.form["pet_id"]
+            shelter_id = request.form["shelter"]
+            foster_id = request.form["foster"]
+            type = request.form["type"]
+            weight = request.form["weight"]
+            is_kid_friendly = request.form["is_kid_friendly"]
+            name = request.form["name"]
+            age = request.form["age"]
+            breed = request.form["breed"]
+            gender = request.form["gender"]
+            is_adopted = request.form["is_adopted"]
+
+            query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted, pet_id))
+            mysql.connection.commit()
+
+            return redirect("/pets")
 
 
 # Adopters page routes
@@ -366,5 +423,5 @@ def adoption_records():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 6969))
+    port = int(os.environ.get('PORT', 6968))
     app.run(port=port, debug=True)
