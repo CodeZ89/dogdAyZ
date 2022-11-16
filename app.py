@@ -240,7 +240,9 @@ def delete_shelter(shelter_id):
 @app.route('/foster_shelters', methods=["POST", "GET"])
 def foster_shelters():
     if request.method == "GET":
-        query = "SELECT Shelters.name AS Shelter, Fosters.name AS Foster FROM Foster_shelters JOIN Shelters ON Foster_shelters.shelter_id = Shelters.shelter_id JOIN Fosters ON Foster_shelters.foster_id = Fosters.foster_id ORDER BY Shelters.name ASC"
+        query = """SELECT foster_shelter_id, Shelters.name AS Shelter, Fosters.name AS Foster FROM Foster_shelters 
+        JOIN Shelters ON Foster_shelters.shelter_id = Shelters.shelter_id 
+        JOIN Fosters ON Foster_shelters.foster_id = Fosters.foster_id ORDER BY Shelters.name ASC"""
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -270,14 +272,49 @@ def foster_shelters():
         return redirect("/foster_shelters")
     
 
-"""@app.route('/delete_foster_shelters/<int:(shelter_id, foster_id)>')
-def delete_foster_shelter(shelter_id, foster_id):
-    query = "DELETE FROM Foster_shelters WHERE shelter_id = '%s' AND foster_id = '%s';"
+@app.route('/delete_foster_shelter/<int:foster_shelter_id>')
+def delete_foster_shelter(foster_shelter_id):
+    query = "DELETE FROM Foster_shelters WHERE foster_shelter_id = '%s';"
     cur = mysql.connection.cursor()
-    cur.execute(query, (shelter_id, foster_id))
+    cur.execute(query, (foster_shelter_id,))
     mysql.connection.commit()
 
-    return redirect("/foster_shelters")"""
+    return redirect("/foster_shelters")
+
+
+@app.route('/edit_foster_shelter/<int:foster_shelter_id>', methods=["POST", "GET"])
+def edit_foster_shelter(foster_shelter_id):
+    if request.method == "GET":
+        query = "SELECT * FROM Foster_shelters WHERE foster_shelter_id = %s" % (foster_shelter_id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        shelter_data = cur.fetchall()
+
+        query3 = "SELECT Fosters.foster_id, CONCAT(Fosters.name, ', ID: ', Fosters.foster_id ) as Foster FROM Fosters"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        foster_data = cur.fetchall()
+
+        return render_template("edit_foster_shelter.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
+    
+    if request.method == "POST":
+        if request.form.get("Edit_Foster_Shelter"):
+            foster_shelter_id = request.form["foster_shelter_id"]
+            shelter_id = request.form["shelter"]
+            foster_id = request.form["foster"]
+
+            query = "UPDATE Foster_shelters SET Foster_shelters.shelter_id = %s, Foster_shelters.foster_id = %s WHERE Foster_shelters.foster_shelter_id = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (shelter_id, foster_id, foster_shelter_id))
+            mysql.connection.commit()
+        
+            return redirect("/foster_shelters")
+
 
 
 # adoption records page routes
