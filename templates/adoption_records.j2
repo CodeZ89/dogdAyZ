@@ -78,7 +78,11 @@
           <tr>
           {% for key in data[0].keys() %}
           <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {% if key == "adoption_num"%}
+            Adoption ID
+          {% else %}
           {{ key }}
+          {% endif %}
           </th>
             {% endfor %}
           </tr>
@@ -87,7 +91,15 @@
          {% for item in data %}
           <tr>
            {% for key in item.keys() %}
-            <td> {{item[key]}}</td>
+            <td> 
+            {% if key == "Returned" and item[key] == 0 %}
+              No
+            {% elif key == "Returned" and item[key] == 1 %}
+              Yes
+            {% else %}
+            {{item[key]}}
+            {% endif %}
+            </td>
             {% endfor %}
             <td>
               <a href="edit_adoption_record/{{item.adoption_num}}" class="edit" data-toggle="modal"><i class="material-icons"

@@ -75,7 +75,29 @@
           <tr>
           {% for key in data[0].keys() %}
           <th scope="col" data-field="{{ key }}" data-filter-control="input">
-          {{ key }}
+          {% if key == "adopter_id"%}
+            Adopter ID
+          {% elif key == "first_name"%}
+            First Name
+          {% elif key == "last_name"%}
+            Last Name
+          {% elif key == "phone_number"%}
+            Phone Number
+          {% elif key == "email"%}
+            Email
+          {% elif key == "city"%}
+            City
+          {% elif key == "state"%}
+            State
+          {% elif key == "number_of_pets"%}
+            Number Of Pets
+          {% elif key == "has_kid"%}
+            Has Kid?
+          {% elif key == "looking_for"%}
+            Looking For
+          {% else %}
+            {{ key }}
+          {% endif %}
           </th>
             {% endfor %}
           </tr>
@@ -84,11 +106,22 @@
         {% for item in data %}
           <tr>
           {% for key in item.keys() %}
-            <td> {{item[key]}}</td>
+            <td>
+            {% if key == "has_kid" and item[key] == 0 %}
+              No
+            {% elif key == "has_kid" and item[key] == 1 %}
+              Yes
+            {% else %}
+             {{item[key]}}
+             {% endif %}
+             </td>
             {% endfor %}
+            
           </tr>
           {% endfor %}
           {% endif %}
+          
+       
           
         </tbody>
       </table>
@@ -146,8 +179,8 @@
             <div class="col-sm-4">
               <label>Has Kid?</label>
               <select class="form-control" name="has_kid" id="has_kid" value = "{{data[0].has_kid}}" required>
-                <option value="0"> False </option>
-                <option value="1"> True </option>
+                <option value="0"> No </option>
+                <option value="1"> Yes </option>
               </select>
             </div>
             <div class="col-md-6">
