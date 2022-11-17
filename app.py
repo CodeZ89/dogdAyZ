@@ -377,7 +377,9 @@ def delete_foster_shelter(foster_shelter_id):
 @app.route('/edit_foster_shelter/<int:foster_shelter_id>', methods=["POST", "GET"])
 def edit_foster_shelter(foster_shelter_id):
     if request.method == "GET":
-        query = "SELECT * FROM Foster_shelters WHERE foster_shelter_id = %s" % (foster_shelter_id)
+        query = """SELECT foster_shelter_id, Shelters.name AS Shelter, Fosters.name AS Foster FROM Foster_shelters 
+        JOIN Shelters ON Foster_shelters.shelter_id = Shelters.shelter_id 
+        JOIN Fosters ON Foster_shelters.foster_id = Fosters.foster_id WHERE foster_shelter_id = %s ORDER BY Shelters.name ASC """ % (foster_shelter_id)
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -392,7 +394,12 @@ def edit_foster_shelter(foster_shelter_id):
         cur.execute(query3)
         foster_data = cur.fetchall()
 
-        return render_template("edit_foster_shelter.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
+        query4 = "SELECT * FROM Foster_shelters WHERE foster_shelter_id = %s" % (foster_shelter_id)
+        cur = mysql.connection.cursor()
+        cur.execute(query4)
+        id_data = cur.fetchall()
+
+        return render_template("edit_foster_shelter.j2", data=data, shelter_data=shelter_data, foster_data=foster_data, id_data=id_data)
     
     if request.method == "POST":
         if request.form.get("Edit_Foster_Shelter"):
@@ -413,7 +420,8 @@ def edit_foster_shelter(foster_shelter_id):
 @app.route('/adoption_records', methods=["GET", "POST"])
 def adoption_records():
     if request.method == "GET":
-        query = """SELECT Adoption_records.adoption_num, CONCAT(Adopters.first_name, ' ', Adopters.last_name) AS Adopter, CONCAT(Pets.type, ', ', 'Name: ', Pets.name) AS Pet, date, was_returned FROM Adoption_records 
+        query = """SELECT Adoption_records.adoption_num, CONCAT(Adopters.first_name, ' ', Adopters.last_name) AS Adopter, CONCAT(Pets.type, ', ', 'Name: ', Pets.name) AS Pet,
+        Adoption_records.date AS Date, Adoption_records.was_returned AS Returned FROM Adoption_records 
         JOIN Adopters ON Adoption_records.adopter_id = Adopters.adopter_id 
         JOIN Pets ON Adoption_records.pet_id = Pets.pet_id"""
         cur = mysql.connection.cursor()
@@ -460,7 +468,10 @@ def delete_adoption_record(adoption_num):
 @app.route('/edit_adoption_record/<int:adoption_num>', methods=["POST", "GET"])
 def edit_adoption_record(adoption_num):
     if request.method == "GET":
-        query = "SELECT * FROM Adoption_records WHERE adoption_num = %s" % (adoption_num)
+        query = """SELECT Adoption_records.adoption_num, CONCAT(Adopters.first_name, ' ', Adopters.last_name) AS Adopter, CONCAT(Pets.type, ', ', 'Name: ', Pets.name) AS Pet, 
+        Adoption_records.date AS Date, Adoption_records.was_returned AS Returned FROM Adoption_records 
+        JOIN Adopters ON Adoption_records.adopter_id = Adopters.adopter_id 
+        JOIN Pets ON Adoption_records.pet_id = Pets.pet_id WHERE adoption_num = %s""" % (adoption_num)
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -477,7 +488,12 @@ def edit_adoption_record(adoption_num):
         cur.execute(query3)
         pet_data = cur.fetchall()
 
-        return render_template("edit_adoption_record.j2", data=data, adopter_data=adopter_data, pet_data=pet_data)
+        query4 = "SELECT * FROM Adoption_records WHERE adoption_num = %s" % (adoption_num)
+        cur = mysql.connection.cursor()
+        cur.execute(query4)
+        id_data = cur.fetchall()
+
+        return render_template("edit_adoption_record.j2", data=data, adopter_data=adopter_data, pet_data=pet_data, id_data=id_data)
     
     if request.method == "POST":
         if request.form.get("Edit_Adoption_Record"):
