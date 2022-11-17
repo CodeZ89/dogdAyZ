@@ -78,7 +78,11 @@
           <tr>
           {% for key in data[0].keys() %}
           <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {% if key == "foster_shelter_id"%}
+            Foster-Shelter ID
+          {% else %}
           {{ key }}
+          {% endif %}
           </th>
             {% endfor %}
           </tr>

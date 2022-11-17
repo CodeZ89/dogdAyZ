@@ -75,7 +75,23 @@
           <tr>
           {% for key in data[0].keys() %}
           <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {% if key == "shelter_id"%}
+            Shelter ID
+          {% elif key == "city" %}
+            City
+          {% elif key == "state" %}
+            State
+          {% elif key == "phone_number" %}
+            Phone Number
+          {% elif key == "name" %}
+            Name
+          {% elif key == "number_of_pets" %}
+            Number of Pets
+          {% elif key == "number_of_pets_foster" %}
+            Number of Pets in Foster Homes
+          {% else %}
           {{ key }}
+          {% endif %}
           </th>
             {% endfor %}
           </tr>
@@ -86,6 +102,7 @@
           {% for key in item.keys() %}
             <td> {{item[key]}}</td>
             {% endfor %}
+            
           </tr>
           {% endfor %}
           {% endif %}
