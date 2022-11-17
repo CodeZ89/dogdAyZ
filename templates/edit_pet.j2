@@ -113,10 +113,10 @@
               <select id="foster" name="foster">
                 <option value="0">&nbsp;</option>
               {% for foster in foster_data %}
-              {% if foster['foster_id'] == data[0].foster_id %}
+              {% if foster['foster_id'] == id_data[0].foster_id %}
                 <option value="{{ foster['foster_id']}}" selected> {{foster['Foster']}}</option>
                 {% else %}
-                <option value="{{ foster['foster_id']}}"> {{foster['Foster']}}</option>
+                <option value="{{ foster['Foster']}}"> {{foster['Foster']}}</option>
                 {% endif %}
                 {% endfor %}
               </select>
@@ -125,7 +125,7 @@
               <label>Shelter</label>
               <select id="shelter" name="shelter">
               {% for shelter in shelter_data %}
-              {%if shelter['shelter_id'] == data[0].shelter_id %}
+              {%if shelter['shelter_id'] == id_data[0].shelter_id %}
                 <option value="{{ shelter['shelter_id']}}" selected> {{shelter['Shelter']}}</option>
                 {% else %}
                 <option value="{{ shelter['shelter_id']}}"> {{shelter['Shelter']}}</option>
@@ -135,16 +135,16 @@
             </div>
             <div class="form-group">
               <label>Type</label>
-              <input id="type" name="type" type="text" class="form-control" required>
+              <input value="{{id_data[0].type}}" id="type" name="type" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Weight</label>
-              <input id="weight" name="weight" type="text" class="form-control" required>
+              <input value="{{id_data[0].weight}}" id="weight" name="weight" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Kid Friendly?</label>
               <select class="form-control" name="is_kid_friendly" id="is_kid_friendly">
-              {% if data[0].is_kid_friendly == 0 %}
+              {% if id_data[0].is_kid_friendly == 0 %}
                 <option value="1">Yes</option>
                 <option value="0" selected>No</option>
               {% else %}
@@ -155,27 +155,32 @@
             </div>
             <div class="form-group">
               <label>Name</label>
-              <input id="name" name="name" type="text" class="form-control" required>
+              <input value="{{id_data[0].name}}"id="name" name="name" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Age</label>
-              <input id="age" name="age" type="text" class="form-control" required>
+              <input value="{{id_data[0].age}}" id="age" name="age" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Breed</label>
-              <input id="breed" name="breed"type="text" class="form-control">
+              <input value="{{id_data[0].breed}}" id="breed" name="breed"type="text" class="form-control">
             </div>
             <div class="form-group">
               <label>Gender</label>
               <select class="form-control" id="gender" name="gender" required>
-                <option value="Male">Male</option>
+              {% if id_data[0].gender == 'Male' %}
+                <option value="Male" selected>Male</option>
                 <option value="Female">Female</option>
+              {%else%}
+              <option value="Male" >Male</option>
+                <option value="Female" selected>Female</option>
+                {% endif %}
               </select>
             </div>
             <div class="form-group">
               <label>Adopted?</label>
               <select class="form-control" id="is_adopted" name="is_adopted" required>
-               {% if data[0].is_adopted == 0 %}
+               {% if id_data[0].Adopted == 0 %}
                 <option value="1">Yes</option>
                 <option value="0" selected>No</option>
               {% else %}

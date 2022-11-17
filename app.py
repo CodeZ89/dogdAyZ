@@ -99,7 +99,12 @@ def edit_pet(pet_id):
         cur.execute(query3)
         foster_data = cur.fetchall()
 
-        return render_template("edit_pet.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
+        query4 = "SELECT * FROM Pets WHERE pet_id = %s" %(pet_id)
+        cur = mysql.connection.cursor()
+        cur.execute(query4)
+        id_data = cur.fetchall()
+
+        return render_template("edit_pet.j2", data=data, shelter_data=shelter_data, foster_data=foster_data, id_data=id_data)
     
     if request.method == "POST":
         if request.form.get("Edit_Pet"):
