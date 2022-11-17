@@ -325,7 +325,7 @@ def edit_foster_shelter(foster_shelter_id):
         cur.execute(query)
         data = cur.fetchall()
 
-        query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC;"
+        query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         shelter_data = cur.fetchall()
@@ -353,15 +353,91 @@ def edit_foster_shelter(foster_shelter_id):
 
 
 # adoption records page routes
-@app.route('/adoption_records', methods=["GET"])
+@app.route('/adoption_records', methods=["GET", "POST"])
 def adoption_records():
     if request.method == "GET":
-        query = "SELECT * FROM Adoption_records"
+        query = """SELECT Adoption_records.adoption_num, CONCAT(Adopters.first_name, ' ', Adopters.last_name) AS Adopter, CONCAT(Pets.type, ', ', 'Name: ', Pets.name) AS Pet, date, was_returned FROM Adoption_records 
+        JOIN Adopters ON Adoption_records.adopter_id = Adopters.adopter_id 
+        JOIN Pets ON Adoption_records.pet_id = Pets.pet_id"""
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
 
-    return render_template("adoption_records.j2", data=data)
+        query2 = """SELECT Adopters.adopter_id, CONCAT(Adopters.first_name, ' ', Adopters.last_name, ', ID: ', Adopters.adopter_id) as Adopter FROM Adopters 
+        ORDER BY CONCAT(Adopters.last_name, Adopters.first_name) ASC"""
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        adopter_data = cur.fetchall()
+
+        query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
+        ORDER BY Pets.type ASC""" 
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        pet_data = cur.fetchall()
+
+        return render_template("adoption_records.j2", data=data, adopter_data=adopter_data, pet_data=pet_data)
+
+    if request.method == "POST":
+        if request.form.get("Add_Adoption_Record"):
+            adopter_id = request.form["adopter"]
+            pet_id = request.form["pet"]
+            date = request.form["adoption_date"]
+            was_returned = request.form["returned"]
+
+            query = "INSERT INTO Adoption_records (pet_id, adopter_id, date, was_returned) VALUES (%s, %s, %s, %s)"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (pet_id, adopter_id, date, was_returned))
+            mysql.connection.commit()
+        
+        return redirect("/adoption_records")
+
+@app.route('/delete_adoption_record/<int:adoption_num>')
+def delete_adoption_record(adoption_num):
+    query = "DELETE FROM Adoption_records WHERE adoption_num = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (adoption_num,))
+    mysql.connection.commit()
+
+    return redirect("/adoption_records")
+
+@app.route('/edit_adoption_record/<int:adoption_num>', methods=["POST", "GET"])
+def edit_adoption_record(adoption_num):
+    if request.method == "GET":
+        query = "SELECT * FROM Adoption_records WHERE adoption_num = %s" % (adoption_num)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        query2 = """SELECT Adopters.adopter_id, CONCAT(Adopters.first_name, ' ', Adopters.last_name, ', ID: ', Adopters.adopter_id) as Adopter FROM Adopters 
+        ORDER BY CONCAT(Adopters.last_name, Adopters.first_name) ASC"""
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        adopter_data = cur.fetchall()
+
+        query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
+        ORDER BY Pets.type ASC""" 
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        pet_data = cur.fetchall()
+
+        return render_template("edit_adoption_record.j2", data=data, adopter_data=adopter_data, pet_data=pet_data)
+    
+    if request.method == "POST":
+        if request.form.get("Edit_Adoption_Record"):
+            adoption_num = request.form["adoption_num"]
+            adopter_id = request.form["adopter"]
+            pet_id = request.form["pet"]
+            date = request.form["adoption_date"]
+            was_returned = request.form["returned"]
+
+            query = """UPDATE Adoption_records SET Adoption_records.adopter_id = %s, Adoption_records.pet_id = %s, Adoption_records.date = %s, 
+            Adoption_records.was_returned = %s WHERE Adoption_records.adoption_num = %s"""
+            cur = mysql.connection.cursor()
+            cur.execute(query, (adopter_id, pet_id, date, was_returned, adoption_num))
+            mysql.connection.commit()
+
+            return redirect("/adoption_records")
+    
 # Listener
 
 
