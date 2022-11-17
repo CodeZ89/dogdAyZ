@@ -96,9 +96,9 @@
             <td> {{item[key]}}</td>
             {% endfor %}
             <td>
-              <a href="#editPetModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+              <a href="edit_pet/{{item.pet_id}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
                   title="Edit">&#xE254;</i></a>
-              <a href="#deletePetModal" class="delete" data-toggle="modal"><i class="material-icons"
+              <a href="delete_pet/{{item.pet_id}}" class="delete" data-toggle="modal"><i class="material-icons"
                   data-toggle="tooltip" title="Delete">&#xE872;</i></a>
             </td>
           </tr>
@@ -230,9 +230,11 @@
             <div class="form-group">
               <label>Foster</label>
               <select id="foster" name="foster">
+                <option value="0">&nbsp;</option>
               {% for foster in foster_data %}
                 <option value="{{ foster['foster_id']}}"> {{foster['Foster']}}</option>
                 {% endfor %}
+                
               </select>
             </div>
             <div class="form-group">
