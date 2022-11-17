@@ -84,17 +84,17 @@ def delete_pet(pet_id):
 @app.route('/edit_pet/<int:pet_id>', methods=["POST", "GET"])
 def edit_pet(pet_id):
     if request.method == "GET":
-        query = "SELECT * FROM Pets WHERE pet_id = %s" % (pet_id)
+        query = "SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id WHERE pet_id = %s" % (pet_id)
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
 
-        query2 = "SELECT Shelters.shelter_id, Shelters.name AS Shelter from Shelters ORDER BY Shelters.name ASC;"
+        query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC;"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         shelter_data = cur.fetchall()
 
-        query3 = "SELECT Fosters.foster_id, Fosters.name AS Foster FROM Fosters"
+        query3 = "SELECT Fosters.foster_id, CONCAT(Fosters.name, ', ID: ', Fosters.foster_id ) as Foster FROM Fosters"
         cur = mysql.connection.cursor()
         cur.execute(query3)
         foster_data = cur.fetchall()

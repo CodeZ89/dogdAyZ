@@ -96,7 +96,7 @@
   </div>
 
   <!--Edit Pet-->
-<div id="editPetModal" class="modal fade">
+<div id="editPetModal">
     <div class="modal-dialog modal-lg" >
       <div class="modal-content">
         <form id="editPet" action="/edit_pet/{{data[0].pet_id}}" method="POST">
@@ -144,8 +144,13 @@
             <div class="form-group">
               <label>Kid Friendly?</label>
               <select class="form-control" name="is_kid_friendly" id="is_kid_friendly">
+              {% if data[0].is_kid_friendly == 0 %}
                 <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+              {% else %}
+              <option value="1" selected>Yes</option>
                 <option value="0">No</option>
+              {% endif %}
               </select>
             </div>
             <div class="form-group">
@@ -170,8 +175,13 @@
             <div class="form-group">
               <label>Adopted?</label>
               <select class="form-control" id="is_adopted" name="is_adopted" required>
-                <option value="No">No</option>
-                <option value="Yes">Yes</option>
+               {% if data[0].is_adopted == 0 %}
+                <option value="1">Yes</option>
+                <option value="0" selected>No</option>
+              {% else %}
+              <option value="1" selected>Yes</option>
+                <option value="0">No</option>
+              {% endif %}
 
               </select>
             </div>
