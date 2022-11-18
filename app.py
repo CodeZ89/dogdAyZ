@@ -25,6 +25,8 @@ def root():
     return render_template("home.j2")
 
 # Pets page routes
+
+
 @app.route('/pets', methods=["GET", "POST"])
 def pets():
     if request.method == "GET":
@@ -44,7 +46,7 @@ def pets():
         foster_data = cur.fetchall()
 
         return render_template("pets.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
-    
+
     if request.method == "POST":
         if request.form.get("Add_Pet"):
             shelter_id = request.form["shelter"]
@@ -61,16 +63,19 @@ def pets():
             if foster_id == "0":
                 query = "INSERT INTO Pets (shelter_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cur = mysql.connection.cursor()
-                cur.execute(query, (shelter_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted))
+                cur.execute(query, (shelter_id, type, weight,
+                            is_kid_friendly, name, age, breed, gender, is_adopted))
                 mysql.connection.commit()
 
             else:
                 query = "INSERT INTO Pets (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cur = mysql.connection.cursor()
-                cur.execute(query, (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted))
+                cur.execute(query, (shelter_id, foster_id, type, weight,
+                            is_kid_friendly, name, age, breed, gender, is_adopted))
                 mysql.connection.commit()
-        
+
         return redirect("/pets")
+
 
 @app.route('/delete_pet/<int:pet_id>')
 def delete_pet(pet_id):
@@ -81,10 +86,12 @@ def delete_pet(pet_id):
 
     return redirect("/pets")
 
+
 @app.route('/edit_pet/<int:pet_id>', methods=["POST", "GET"])
 def edit_pet(pet_id):
     if request.method == "GET":
-        query = "SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id WHERE pet_id = %s" % (pet_id)
+        query = "SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id WHERE pet_id = %s" % (
+            pet_id)
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -99,13 +106,13 @@ def edit_pet(pet_id):
         cur.execute(query3)
         foster_data = cur.fetchall()
 
-        query4 = "SELECT * FROM Pets WHERE pet_id = %s" %(pet_id)
+        query4 = "SELECT * FROM Pets WHERE pet_id = %s" % (pet_id)
         cur = mysql.connection.cursor()
         cur.execute(query4)
         id_data = cur.fetchall()
 
         return render_template("edit_pet.j2", data=data, shelter_data=shelter_data, foster_data=foster_data, id_data=id_data)
-    
+
     if request.method == "POST":
         if request.form.get("Edit_Pet"):
             pet_id = request.form["pet_id"]
@@ -120,10 +127,19 @@ def edit_pet(pet_id):
             gender = request.form["gender"]
             is_adopted = request.form["is_adopted"]
 
-            query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
-            cur = mysql.connection.cursor()
-            cur.execute(query, (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted, pet_id))
-            mysql.connection.commit()
+            if foster_id == "0":
+                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = NULL, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, type, weight, is_kid_friendly,
+                            name, age, breed, gender, is_adopted, pet_id))
+                mysql.connection.commit()
+
+            else:
+                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, foster_id, type, weight,
+                            is_kid_friendly, name, age, breed, gender, is_adopted, pet_id))
+                mysql.connection.commit()
 
             return redirect("/pets")
 
@@ -146,9 +162,10 @@ def adopters():
             query = "INSERT INTO Adopters (first_name, last_name, phone_number, email, city, state, number_of_pets, has_kid, looking_for) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
             cur = mysql.connection.cursor()
-            cur.execute(query, (first_name, last_name, phone_number, email, city, state, number_of_pets, has_kid, looking_for))
+            cur.execute(query, (first_name, last_name, phone_number,
+                        email, city, state, number_of_pets, has_kid, looking_for))
             mysql.connection.commit()
-        
+
         return redirect("/adopters")
 
     if request.method == "GET":
@@ -160,6 +177,8 @@ def adopters():
     return render_template("adopters.j2", data=data)
 
 # edit an adopter
+
+
 @app.route("/edit_adopter/<int:adopter_id>", methods=["POST", "GET"])
 def edit_adopter(adopter_id):
     if request.method == "GET":
@@ -169,7 +188,7 @@ def edit_adopter(adopter_id):
         data = cur.fetchall()
 
         return render_template("edit_adopter.j2", data=data)
-    
+
     if request.method == "POST":
         if request.form.get("Edit_Adopter"):
             first_name = request.form["adopter_fname"]
@@ -181,15 +200,18 @@ def edit_adopter(adopter_id):
             number_of_pets = request.form["number_of_pets"]
             has_kid = request.form["has_kid"]
             looking_for = request.form["looking_for"]
-        
+
         query = "UPDATE Adopters SET Adopters.first_name = %s, Adopters.last_name = %s,Adopters.phone_number = %s, Adopters.email = %s, Adopters.city = %s, Adopters.state = %s, Adopters.number_of_pets = %s, Adopters.has_kid = %s, Adopters.looking_for = %s WHERE Adopters.adopter_id = %s"
         cur = mysql.connection.cursor()
-        cur.execute(query, (first_name, last_name, phone_number, email, city, state, number_of_pets, has_kid, looking_for, adopter_id))
+        cur.execute(query, (first_name, last_name, phone_number, email,
+                    city, state, number_of_pets, has_kid, looking_for, adopter_id))
         mysql.connection.commit()
 
         return redirect("/adopters")
 
 # delete an adopter
+
+
 @app.route("/delete_adopter/<int:adopter_id>")
 def delete_adopter(adopter_id):
 
@@ -203,7 +225,9 @@ def delete_adopter(adopter_id):
 # Fosters page routes
 
 # Read and Create Routes
-@app.route('/fosters', methods=["POST","GET"])
+
+
+@app.route('/fosters', methods=["POST", "GET"])
 def fosters():
     if request.method == "POST":
         if request.form.get("Add_Foster"):
@@ -217,7 +241,7 @@ def fosters():
             cur = mysql.connection.cursor()
             cur.execute(query, (city, state, phone_number, name))
             mysql.connection.commit()
-        
+
         return redirect("/fosters")
 
     if request.method == "GET":
@@ -229,6 +253,8 @@ def fosters():
     return render_template("fosters.j2", data=data)
 
 # edit a foster
+
+
 @app.route("/edit_foster/<int:foster_id>", methods=["POST", "GET"])
 def edit_foster(foster_id):
     if request.method == "GET":
@@ -238,7 +264,7 @@ def edit_foster(foster_id):
         data = cur.fetchall()
 
         return render_template("edit_foster.j2", data=data)
-    
+
     if request.method == "POST":
         if request.form.get("Edit_Foster"):
             foster_id = request.form["foster_id"]
@@ -254,7 +280,9 @@ def edit_foster(foster_id):
 
             return redirect("/fosters")
 
-#delete a foster
+# delete a foster
+
+
 @app.route("/delete_foster/<int:foster_id>")
 def delete_foster(foster_id):
 
@@ -266,6 +294,8 @@ def delete_foster(foster_id):
     return redirect("/fosters")
 
 # Shelters page routes
+
+
 @app.route('/shelters', methods=["POST", "GET"])
 def shelters():
     if request.method == "POST":
@@ -294,6 +324,8 @@ def shelters():
     return render_template("shelters.j2", data=data)
 
 # edit a shelter
+
+
 @app.route("/edit_shelter/<int:shelter_id>", methods=["POST", "GET"])
 def edit_shelter(shelter_id):
     if request.method == "GET":
@@ -323,6 +355,8 @@ def edit_shelter(shelter_id):
             return redirect("/shelters")
 
 # delete a shelter
+
+
 @app.route("/delete_shelter/<int:shelter_id>")
 def delete_shelter(shelter_id):
 
@@ -334,6 +368,8 @@ def delete_shelter(shelter_id):
     return redirect("/shelters")
 
 # Foster-shelters page routes
+
+
 @app.route('/foster_shelters', methods=["POST", "GET"])
 def foster_shelters():
     if request.method == "GET":
@@ -355,7 +391,7 @@ def foster_shelters():
         foster_data = cur.fetchall()
 
         return render_template("foster_shelters.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
-    
+
     if request.method == "POST":
         if request.form.get("Add_Foster_Shelter"):
             shelter_id = request.form["shelter"]
@@ -367,7 +403,7 @@ def foster_shelters():
             mysql.connection.commit()
 
         return redirect("/foster_shelters")
-    
+
 
 @app.route('/delete_foster_shelter/<int:foster_shelter_id>')
 def delete_foster_shelter(foster_shelter_id):
@@ -399,13 +435,14 @@ def edit_foster_shelter(foster_shelter_id):
         cur.execute(query3)
         foster_data = cur.fetchall()
 
-        query4 = "SELECT * FROM Foster_shelters WHERE foster_shelter_id = %s" % (foster_shelter_id)
+        query4 = "SELECT * FROM Foster_shelters WHERE foster_shelter_id = %s" % (
+            foster_shelter_id)
         cur = mysql.connection.cursor()
         cur.execute(query4)
         id_data = cur.fetchall()
 
         return render_template("edit_foster_shelter.j2", data=data, shelter_data=shelter_data, foster_data=foster_data, id_data=id_data)
-    
+
     if request.method == "POST":
         if request.form.get("Edit_Foster_Shelter"):
             foster_shelter_id = request.form["foster_shelter_id"]
@@ -416,9 +453,8 @@ def edit_foster_shelter(foster_shelter_id):
             cur = mysql.connection.cursor()
             cur.execute(query, (shelter_id, foster_id, foster_shelter_id))
             mysql.connection.commit()
-        
-            return redirect("/foster_shelters")
 
+            return redirect("/foster_shelters")
 
 
 # adoption records page routes
@@ -440,7 +476,7 @@ def adoption_records():
         adopter_data = cur.fetchall()
 
         query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
-        ORDER BY Pets.type ASC""" 
+        ORDER BY Pets.type ASC"""
         cur = mysql.connection.cursor()
         cur.execute(query3)
         pet_data = cur.fetchall()
@@ -458,8 +494,9 @@ def adoption_records():
             cur = mysql.connection.cursor()
             cur.execute(query, (pet_id, adopter_id, date, was_returned))
             mysql.connection.commit()
-        
+
         return redirect("/adoption_records")
+
 
 @app.route('/delete_adoption_record/<int:adoption_num>')
 def delete_adoption_record(adoption_num):
@@ -469,6 +506,7 @@ def delete_adoption_record(adoption_num):
     mysql.connection.commit()
 
     return redirect("/adoption_records")
+
 
 @app.route('/edit_adoption_record/<int:adoption_num>', methods=["POST", "GET"])
 def edit_adoption_record(adoption_num):
@@ -488,18 +526,19 @@ def edit_adoption_record(adoption_num):
         adopter_data = cur.fetchall()
 
         query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
-        ORDER BY Pets.type ASC""" 
+        ORDER BY Pets.type ASC"""
         cur = mysql.connection.cursor()
         cur.execute(query3)
         pet_data = cur.fetchall()
 
-        query4 = "SELECT * FROM Adoption_records WHERE adoption_num = %s" % (adoption_num)
+        query4 = "SELECT * FROM Adoption_records WHERE adoption_num = %s" % (
+            adoption_num)
         cur = mysql.connection.cursor()
         cur.execute(query4)
         id_data = cur.fetchall()
 
         return render_template("edit_adoption_record.j2", data=data, adopter_data=adopter_data, pet_data=pet_data, id_data=id_data)
-    
+
     if request.method == "POST":
         if request.form.get("Edit_Adoption_Record"):
             adoption_num = request.form["adoption_num"]
@@ -511,11 +550,12 @@ def edit_adoption_record(adoption_num):
             query = """UPDATE Adoption_records SET Adoption_records.adopter_id = %s, Adoption_records.pet_id = %s, Adoption_records.date = %s, 
             Adoption_records.was_returned = %s WHERE Adoption_records.adoption_num = %s"""
             cur = mysql.connection.cursor()
-            cur.execute(query, (adopter_id, pet_id, date, was_returned, adoption_num))
+            cur.execute(query, (adopter_id, pet_id, date,
+                        was_returned, adoption_num))
             mysql.connection.commit()
 
             return redirect("/adoption_records")
-    
+
 # Listener
 
 
