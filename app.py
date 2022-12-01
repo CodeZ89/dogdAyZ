@@ -361,7 +361,11 @@ def shelters():
         return redirect("/shelters")
 
     if request.method == "GET":
-        query = "SELECT * FROM Shelters"
+        query = """SELECT Shelters.shelter_id, Shelters.city, Shelters.state, Shelters.phone_number, Shelters.name, 
+        COUNT(case when Pets.shelter_id = Shelters.shelter_id then 1 else null end) AS number_of_pets,
+        COUNT(case when Pets.shelter_id = Shelters.shelter_id AND Pets.foster_id then 1 else null end) AS number_of_pets_foster FROM Shelters
+        JOIN Pets ON Pets.shelter_id = Shelters.shelter_id
+        GROUP BY shelter_id"""
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
