@@ -128,32 +128,33 @@
             </div>
             <div class="form-group row">
             <div class="col-sm-3">
-              <label>City</label>
+              <label>* City</label>
               <input type="text" value="{{data[0].city}}" class="form-control" id="shelter_city" name="shelter_city" required>
             </div>
             <div class="col-sm-2">
-              <label>State</label>
+              <label>* State</label>
               <input type="text" value="{{data[0].state}}" class="form-control" id="shelter_state" name="shelter_state" required>
             </div>
             <div class="col-md-4">
-              <label>Phone Number</label>
+              <label>* Phone Number</label>
               <input type="tel" value="{{data[0].phone_number}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="shelter_phone" id="shelter_phone" required>
               <small>Format: 123-456-7890</small>
             </div>
             </div>
             <div class="form-group row">
             <div class="col-sm-6">
-              <label>Name</label>
+              <label>* Name</label>
               <input type="text" value="{{data[0].name}}" class="form-control" id="shelter_name" name="shelter_name" required>
             </div>
             <div class="col-sm-3">
-              <label>Number of Pets</label>
+              <label>* Number of Pets</label>
               <input type="number" min="0" value="{{data[0].number_of_pets}}" class="form-control" id="shelter_number_pet" name="shelter_number_pet" required>
             </div>
             <div class="col-sm-4">
-              <label>Number of Pets in Foster</label>
+              <label>* Number of Pets in Foster</label>
               <input type="number" min="0" value="{{data[0].number_of_pets_foster}}" class="form-control" id="shelter_number_foster" name="shelter_number_foster" required>
             </div>
+            
             </div>
             
             
@@ -162,6 +163,7 @@
             <a href="/shelters"><input type="button" class="btn btn-default" value="Cancel"></a>
             <a href="/shelters"><input type="submit" class="btn btn-default" value="Save" name="Edit_Shelter"></a>  
           </div>
+          <div class="form-group">* values indicate a required field</div>
         </form>
       </div>
     </div>

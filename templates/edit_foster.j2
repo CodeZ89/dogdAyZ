@@ -124,32 +124,34 @@
             </div>
             <div class="form-group row">
             <div class="col-sm-3">
-              <label>City</label>
+              <label>* City</label>
               <input type="text" value="{{data[0].city}}" class="form-control" id="foster_city" name="foster_city" required>
             </div>
             <div class="col-sm-2">
-              <label>State</label>
+              <label>* State</label>
               <input type="text" value="{{data[0].state}}" class="form-control" id="foster_state" name="foster_state" required>
             </div>
             <div class="col-md-4">
-              <label>Phone Number</label>
+              <label>* Phone Number</label>
               <input type="tel" value="{{data[0].phone_number}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="foster_phone" id="foster_phone" required>
               <small>Format: 123-456-7890</small>
             </div>
             </div>
             <div class="form-group row">
             <div class="col-sm-5">
-              <label>Name</label>
+              <label>* Name</label>
               <input type="text" value="{{data[0].name}}" class="form-control" id="foster_name" name="foster_name" required>
+
+          
             </div>
             </div>
-            
-            
           </div>
           <div class="modal-footer">
+          
             <a href="/fosters"><input type="button" class="btn btn-default" value="Cancel"></a>
             <a href="/fosters"><input type="submit" class="btn btn-default" value="Save" name="Edit_Foster"></a>  
           </div>
+          <div class="form-group">* values indicate a required field</div>
         </form>
       </div>
     </div>

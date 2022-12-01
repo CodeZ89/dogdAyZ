@@ -132,30 +132,32 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
-              <label>City</label>
+              <label>* City</label>
               <input type="text" class="form-control" name="shelter_city" id="shelter_id" required>
             </div>
             <div class="form-group">
-              <label>State</label>
+              <label>* State</label>
               <input type="text" class="form-control" name="shelter_state" id="shelter_state" required>
             </div>
             <div class="form-group">
-              <label>Phone Number</label>
+              <label>* Phone Number</label>
               <input type="tel" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="shelter_phone" id="shelter_phone" required>
               <small>Format: 123-456-7890</small>
             </div>
             <div class="form-group">
-              <label>Name</label>
+              <label>* Name</label>
               <input type="text" class="form-control" name="shelter_name" id="shelter_name" required>
             </div>
             <div class="form-group">
-              <label>Number of Pets</label>
+              <label>* Number of Pets</label>
               <input type="number" class="form-control" name="shelter_number_pet" id="shelter_number_pet" required>
             </div>
             <div class="form-group">
-              <label>Number of Pets in Foster Homes</label>
+              <label>* Number of Pets in Foster Homes</label>
               <input type="number" class="form-control" name="shelter_number_foster" id="shelter_number_foster" required>
             </div>
+            <div class="form-group">* values indicate a required field</div>
+          </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -179,30 +181,32 @@
               <input type="hidden" value="{{data[0].shelter_id}}" class="form-control" id="shelter_id" name="shelter_id" required>
             </div>
             <div class="form-group">
-              <label>City</label>
+              <label>* City</label>
               <input type="text" value="{{data[0].city}}" class="form-control" id="shelter_city" name="shelter_city" required>
             </div>
             <div class="form-group">
-              <label>State</label>
+              <label>* State</label>
               <input type="text" value="{{data[0].state}}" class="form-control" id="shelter_state" name="shelter_state" required>
             </div>
             <div class="form-group">
-              <label>Phone Number</label>
+              <label>* Phone Number</label>
               <input type="tel" value="{{data[0].phone_number}}" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="shelter_phone" id="shelter_phone" required>
               <small>Format: 123-456-7890</small>
             </div>
             <div class="form-group">
-              <label>Name</label>
+              <label>* Name</label>
               <input type="text" value="{{data[0].name}}" class="form-control" id="shelter_name" name="shelter_name" required>
             </div>
             <div class="form-group">
-              <label>Number of Pets</label>
+              <label>* Number of Pets</label>
               <input type="number" value="{{data[0].number_of_pets}}" class="form-control" id="shelter_number_pet" name="shelter_number_pet" required>
             </div>
             <div class="form-group">
-              <label>Number of Pets in Foster Homes</label>
+              <label>* Number of Pets in Foster Homes</label>
               <input type="number" value="{{data[0].number_of_pets_foster}}" class="form-control" id="shelter_number_foster" name="shelter_number_foster" required>
             </div>
+            <div class="form-group">* values indicate a required field</div>
+          </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">

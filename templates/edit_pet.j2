@@ -134,8 +134,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Shelter</label>
-              <select id="shelter" name="shelter">
+              <label>* Shelter</label>
+              <select id="shelter" name="shelter" required>
               {% for shelter in shelter_data %}
               {%if shelter['shelter_id'] == id_data[0].shelter_id %}
                 <option value="{{ shelter['shelter_id']}}" selected> {{shelter['Shelter']}}</option>
@@ -146,11 +146,11 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Type</label>
+              <label>* Type</label>
               <input value="{{id_data[0].type}}" id="type" name="type" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Weight</label>
+              <label>* Weight</label>
               <input value="{{id_data[0].weight}}" id="weight" name="weight" type="number" min="0" step="0.01" class="form-control" required>
             </div>
             <div class="form-group">
@@ -166,11 +166,11 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Name</label>
+              <label>* Name</label>
               <input value="{{id_data[0].name}}"id="name" name="name" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Age</label>
+              <label>* Age</label>
               <input value="{{id_data[0].age}}" id="age" name="age" type="number" min="0" class="form-control" required>
             </div>
             <div class="form-group">
@@ -178,7 +178,7 @@
               <input value="{{id_data[0].breed}}" id="breed" name="breed"type="text" class="form-control">
             </div>
             <div class="form-group">
-              <label>Gender</label>
+              <label>* Gender</label>
               <select class="form-control" id="gender" name="gender" required>
               {% if id_data[0].gender == 'Male' %}
                 <option value="Male" selected>Male</option>
@@ -190,7 +190,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Adopted?</label>
+              <label>* Adopted?</label>
               <select class="form-control" id="is_adopted" name="is_adopted" required>
                {% if id_data[0].Adopted == 0 %}
                 <option value="1">Yes</option>
@@ -202,6 +202,7 @@
 
               </select>
             </div>
+            <div class="form-group">* values indicate a required field</div>
           </div>
           <div class="modal-footer">
             <a href="/pets"><input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"></a>
