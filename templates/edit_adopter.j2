@@ -158,7 +158,7 @@
             </div>
             <div class="col-sm-5">
               <label>Email</label>
-              <input type="text" value="{{data[0].email}}" class="form-control" id="adopter_email" name="adopter_email" required>
+              <input type="email" value="{{data[0].email}}" class="form-control" id="adopter_email" name="adopter_email" required>
             </div>
             </div>
             <div class="form-group row">
@@ -173,7 +173,7 @@
             </div>
             <div class="col-sm-3">
               <label>Number of Pets</label>
-              <input type="number" value="{{data[0].number_of_pets}}" class="form-control" id="number_of_pets" name="number_of_pets" required>
+              <input type="number" min="0" value="{{data[0].number_of_pets}}" class="form-control" id="number_of_pets" name="number_of_pets" required>
             </div>
 
             <div class="col-sm-4">
