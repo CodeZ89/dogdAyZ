@@ -349,13 +349,11 @@ def shelters():
             state = request.form["shelter_state"]
             phone = request.form["shelter_phone"]
             name = request.form["shelter_name"]
-            number_of_pets = request.form["shelter_number_pet"]
-            number_of_pets_foster = request.form["shelter_number_foster"]
+            
 
-            query = "INSERT INTO Shelters (city, state, phone_number, name, number_of_pets, number_of_pets_foster) VALUES (%s, %s, %s, %s, %s, %s)"
+            query = "INSERT INTO Shelters (city, state, phone_number, name) VALUES (%s, %s, %s, %s)"
             cur = mysql.connection.cursor()
-            cur.execute(query, (city, state, phone, name,
-                        number_of_pets, number_of_pets_foster))
+            cur.execute(query, (city, state, phone, name))
             mysql.connection.commit()
 
         return redirect("/shelters")
@@ -392,13 +390,11 @@ def edit_shelter(shelter_id):
             state = request.form["shelter_state"]
             phone_number = request.form["shelter_phone"]
             name = request.form["shelter_name"]
-            number_of_pets = request.form["shelter_number_pet"]
-            number_of_pets_foster = request.form["shelter_number_foster"]
+            
 
-            query = "UPDATE Shelters SET Shelters.city = %s, Shelters.state = %s, Shelters.phone_number = %s, Shelters.name = %s, Shelters.number_of_pets = %s, Shelters.number_of_pets_foster = %s WHERE Shelters.shelter_id = %s"
+            query = "UPDATE Shelters SET Shelters.city = %s, Shelters.state = %s, Shelters.phone_number = %s, Shelters.name = %s WHERE Shelters.shelter_id = %s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (city, state, phone_number, name,
-                        number_of_pets, number_of_pets_foster, shelter_id))
+            cur.execute(query, (city, state, phone_number, name, shelter_id))
             mysql.connection.commit()
 
             return redirect("/shelters")
