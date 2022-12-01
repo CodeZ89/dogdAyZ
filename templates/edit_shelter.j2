@@ -85,10 +85,6 @@
             Phone Number
           {% elif key == "name" %}
             Name
-          {% elif key == "number_of_pets" %}
-            Number of Pets
-          {% elif key == "number_of_pets_foster" %}
-            Number of Pets in Foster Homes
           {% else %}
           {{ key }}
           {% endif %}
@@ -145,14 +141,6 @@
             <div class="col-sm-6">
               <label>* Name</label>
               <input type="text" value="{{data[0].name}}" class="form-control" id="shelter_name" name="shelter_name" required>
-            </div>
-            <div class="col-sm-3">
-              <label>* Number of Pets</label>
-              <input type="number" min="0" value="{{data[0].number_of_pets}}" class="form-control" id="shelter_number_pet" name="shelter_number_pet" required>
-            </div>
-            <div class="col-sm-4">
-              <label>* Number of Pets in Foster</label>
-              <input type="number" min="0" value="{{data[0].number_of_pets_foster}}" class="form-control" id="shelter_number_foster" name="shelter_number_foster" required>
             </div>
             
             </div>
