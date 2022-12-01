@@ -234,12 +234,6 @@
           </table>
         </div>
       
-
-
-
-
-
-      
       <form method="POST" action="/search">
       <div class="container mt-5">
         <div class="row d-flex justify-content-center">
@@ -347,9 +341,48 @@
             </div>
           </div>
         </div>
+        <table class="table table-striped table-hover">
+      {% if results %}
+      <h4>Search Results: </h4>
+        <thead>
+          <tr>
+          {% for key in results[0].keys() %}
+          <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {{ key }}
+          </th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in results %}
+          <tr>
+          {% for key in item.keys() %}
+            <td> 
+            {% if key == "Adopted" and item[key] == 0 %}
+              No
+            {% elif key == "Adopted" and item[key] == 1 %}
+              Yes
+            {% elif key == "KidFriendly" and item[key] == 0 %}
+              No
+            {% elif key == "KidFriendly" and item[key] == 1 %}
+              Yes
+            {% else %}
+            {{item[key]}}
+            {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+          {% endif %}
+          
+        </tbody>
+      </table>
+
       </div>
     </div>
   </div>
+
+   
   <!-- Edit Modal HTML -->
   <div id="addPetModal" class="modal fade">
     <div class="modal-dialog">

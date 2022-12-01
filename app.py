@@ -34,8 +34,24 @@ def search():
             request.form['search'])
         cur = mysql.connection.cursor()
         cur.execute(query)
+        results = cur.fetchall()
+
+        query2 = "SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
         data = cur.fetchall()
-        return render_template("search.j2", data=data)
+
+        query3 = "SELECT Shelters.shelter_id, Shelters.name AS Shelter from Shelters ORDER BY Shelters.name ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        shelter_data = cur.fetchall()
+
+        query4 = "SELECT Fosters.foster_id, Fosters.name AS Foster FROM Fosters"
+        cur = mysql.connection.cursor()
+        cur.execute(query4)
+        foster_data = cur.fetchall()
+
+        return render_template("pets.j2", results=results, data=data, shelter_data=shelter_data, foster_data=foster_data)
 
 
 @app.route('/pets', methods=["GET", "POST"])
