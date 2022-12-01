@@ -27,6 +27,17 @@ def root():
 # Pets page routes
 
 
+@app.route('/search', methods=["POST"])
+def search():
+    if request.method == "POST":
+        query = "SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id WHERE Pets.name = '%s'" % (
+            request.form['search'])
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+        return render_template("search.j2", data=data)
+
+
 @app.route('/pets', methods=["GET", "POST"])
 def pets():
     if request.method == "GET":
