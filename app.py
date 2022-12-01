@@ -56,7 +56,25 @@ def pets():
         cur.execute(query3)
         foster_data = cur.fetchall()
 
-        return render_template("pets.j2", data=data, shelter_data=shelter_data, foster_data=foster_data)
+        query4 = """SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, 
+        Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets 
+        JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id 
+        LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id
+        WHERE Pets.is_adopted = 0"""
+        cur = mysql.connection.cursor()
+        cur.execute(query4)
+        available_data = cur.fetchall()
+
+        query5 = """SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, 
+        Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets 
+        JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id 
+        LEFT JOIN Fosters ON Pets.foster_id = Fosters.foster_id
+        WHERE Pets.is_adopted = 1"""
+        cur = mysql.connection.cursor()
+        cur.execute(query5)
+        adopted_data = cur.fetchall()
+
+        return render_template("pets.j2", data=data, shelter_data=shelter_data, foster_data=foster_data, available_data=available_data, adopted_data=adopted_data)
 
     if request.method == "POST":
         if request.form.get("Add_Pet"):

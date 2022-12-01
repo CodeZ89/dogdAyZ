@@ -52,9 +52,33 @@
       padding: 0;
     }
   </style>
+  <script language="Javascript">
+      function show_table(clicked) {
+        if (clicked == 'show_available') {
+          document.getElementById('available_table').style.display = 'block';
+          document.getElementById('adopted_table').style.display = 'none';
+        } else if (clicked == 'show_adopted') {
+          document.getElementById('available_table').style.display = 'none';
+          document.getElementById('adopted_table').style.display = 'block';
+        } else {
+          document.getElementById('available_table').style.display = 'none';
+          document.getElementById('adopted_table').style.display = 'none';
+        }
+      }
+
+      function clear() {
+        show_table('clear')
+      }
+      function show_available() {
+        show_table('show_available')
+      }
+      function show_adopted() {
+        show_table('show_adopted')
+      }
+    </script>
 </head>
 
-<body>
+<body onload="clear()">
   {% include "components/navbar.html" %}
   {% block content %}
   {% endblock %}
@@ -123,6 +147,97 @@
           
         </tbody>
       </table>
+      
+          <form action="/pets" method="POST">
+            <a href=# class="btn btn-info" name="show_available" onclick="show_available()">Show available</a>
+            <a href=# class="btn btn-info" name="show_adopted" onclick="show_adopted()">Show adopted</a>
+            <button class="btn btn-info" name="clear" onclick="clear()">Clear</button>
+          </form>
+          
+
+      <!--Generate available pets or adopted pets-->
+      <div>
+      <table id="available_table" class="table table-striped table-hover">
+      {% if available_data %}
+        <thead>
+          <tr>
+          {% for key in available_data[0].keys() %}
+          <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {% if key == "pet_id"%}
+            Pet ID
+          {% else %}
+          {{ key }}
+          {% endif %}
+          </th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in available_data %}
+          <tr>
+            {% for key in item.keys() %}
+            <td> 
+            {% if key == "Adopted" and item[key] == 0 %}
+              No
+            {% elif key == "Adopted" and item[key] == 1 %}
+              Yes
+            {% elif key == "KidFriendly" and item[key] == 0 %}
+              No
+            {% elif key == "KidFriendly" and item[key] == 1 %}
+              Yes
+            {% else %}
+            {{item[key]}}
+            {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+          {% endif %}
+      
+      <table id="adopted_table" class="table table-striped table-hover">
+      {% if adopted_data %}
+        <thead>
+          <tr>
+          {% for key in adopted_data[0].keys() %}
+          <th scope="col" data-field="{{ key }}" data-filter-control="input">
+          {% if key == "pet_id"%}
+            Pet ID
+          {% else %}
+          {{ key }}
+          {% endif %}
+          </th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in adopted_data %}
+          <tr>
+            {% for key in item.keys() %}
+            <td> 
+            {% if key == "Adopted" and item[key] == 0 %}
+              No
+            {% elif key == "Adopted" and item[key] == 1 %}
+              Yes
+            {% elif key == "KidFriendly" and item[key] == 0 %}
+              No
+            {% elif key == "KidFriendly" and item[key] == 1 %}
+              Yes
+            {% else %}
+            {{item[key]}}
+            {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </div>
+      
+
+
+
+
+
+      
       <form method="POST" action="/search">
       <div class="container mt-5">
         <div class="row d-flex justify-content-center">
