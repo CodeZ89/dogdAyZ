@@ -1,7 +1,10 @@
+# Flask Routes and functions influenced by Source: https://github.com/osu-cs340-ecampus/flask-starter-app
+
 import os
 from flask import Flask, render_template, json, redirect
 from flask_mysqldb import MySQL
 from flask import request
+from flask import send_from_directory
 
 
 # Configuration
@@ -72,6 +75,7 @@ def pets():
         cur.execute(query3)
         foster_data = cur.fetchall()
 
+        # query to show adopted pets
         query4 = """SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, 
         Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets 
         JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id 
@@ -81,6 +85,7 @@ def pets():
         cur.execute(query4)
         available_data = cur.fetchall()
 
+        # query to get available pets
         query5 = """SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, 
         Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets 
         JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id 
@@ -105,6 +110,7 @@ def pets():
             gender = request.form["gender"]
             is_adopted = request.form["is_adopted"]
 
+            # if pet does not have a foster
             if foster_id == "0":
                 query = "INSERT INTO Pets (shelter_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cur = mysql.connection.cursor()
@@ -141,11 +147,13 @@ def edit_pet(pet_id):
         cur.execute(query)
         data = cur.fetchall()
 
+        # query to get shelters and their id for dropdown in edit page
         query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC;"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         shelter_data = cur.fetchall()
 
+        # query to get fosters and their id for dropdown in edit page
         query3 = "SELECT Fosters.foster_id, CONCAT(Fosters.name, ', ID: ', Fosters.foster_id ) as Foster FROM Fosters"
         cur = mysql.connection.cursor()
         cur.execute(query3)
@@ -172,6 +180,7 @@ def edit_pet(pet_id):
             gender = request.form["gender"]
             is_adopted = request.form["is_adopted"]
 
+            # edit pet if pet doesn't have a foster
             if foster_id == "0":
                 query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = NULL, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
                 cur = mysql.connection.cursor()
@@ -349,7 +358,6 @@ def shelters():
             state = request.form["shelter_state"]
             phone = request.form["shelter_phone"]
             name = request.form["shelter_name"]
-            
 
             query = "INSERT INTO Shelters (city, state, phone_number, name) VALUES (%s, %s, %s, %s)"
             cur = mysql.connection.cursor()
@@ -390,7 +398,6 @@ def edit_shelter(shelter_id):
             state = request.form["shelter_state"]
             phone_number = request.form["shelter_phone"]
             name = request.form["shelter_name"]
-            
 
             query = "UPDATE Shelters SET Shelters.city = %s, Shelters.state = %s, Shelters.phone_number = %s, Shelters.name = %s WHERE Shelters.shelter_id = %s"
             cur = mysql.connection.cursor()
@@ -425,11 +432,13 @@ def foster_shelters():
         cur.execute(query)
         data = cur.fetchall()
 
+        # query to get shelter and shelter id for dropdown
         query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ',ID: ', Shelters.shelter_id) AS Shelter FROM Shelters ORDER BY Shelters.name ASC;"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         shelter_data = cur.fetchall()
 
+        # query to get foster and foster id for dropdown
         query3 = "SELECT Fosters.foster_id, CONCAT(Fosters.name, ', ID: ', Fosters.foster_id ) as Foster FROM Fosters"
         cur = mysql.connection.cursor()
         cur.execute(query3)
@@ -470,11 +479,13 @@ def edit_foster_shelter(foster_shelter_id):
         cur.execute(query)
         data = cur.fetchall()
 
+        # query to get shelter and shelter id for dropdown
         query2 = "SELECT Shelters.shelter_id, CONCAT(Shelters.name, ', ID: ', Shelters.shelter_id) as Shelter FROM Shelters ORDER BY Shelters.name ASC"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         shelter_data = cur.fetchall()
 
+        # query to get foster and foster id for dropdown
         query3 = "SELECT Fosters.foster_id, CONCAT(Fosters.name, ', ID: ', Fosters.foster_id ) as Foster FROM Fosters"
         cur = mysql.connection.cursor()
         cur.execute(query3)
@@ -514,12 +525,14 @@ def adoption_records():
         cur.execute(query)
         data = cur.fetchall()
 
+        # query to get adopter full name and id for display
         query2 = """SELECT Adopters.adopter_id, CONCAT(Adopters.first_name, ' ', Adopters.last_name, ', ID: ', Adopters.adopter_id) as Adopter FROM Adopters 
         ORDER BY CONCAT(Adopters.last_name, Adopters.first_name) ASC"""
         cur = mysql.connection.cursor()
         cur.execute(query2)
         adopter_data = cur.fetchall()
 
+        # query to get pet type, name, and id for display
         query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
         ORDER BY Pets.type ASC"""
         cur = mysql.connection.cursor()
@@ -564,12 +577,14 @@ def edit_adoption_record(adoption_num):
         cur.execute(query)
         data = cur.fetchall()
 
+        # query to get adopter info for dropdown
         query2 = """SELECT Adopters.adopter_id, CONCAT(Adopters.first_name, ' ', Adopters.last_name, ', ID: ', Adopters.adopter_id) as Adopter FROM Adopters 
         ORDER BY CONCAT(Adopters.last_name, Adopters.first_name) ASC"""
         cur = mysql.connection.cursor()
         cur.execute(query2)
         adopter_data = cur.fetchall()
 
+        # query to get pet info for dropdown
         query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
         ORDER BY Pets.type ASC"""
         cur = mysql.connection.cursor()
