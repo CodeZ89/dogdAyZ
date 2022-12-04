@@ -96,6 +96,8 @@
               No
             {% elif key == "KidFriendly" and item[key] == 1 %}
               Yes
+            {% elif key == "Breed" and item[key] == "" %}
+              None
             {% else %}
             {{item[key]}}
             {% endif %}
