@@ -108,7 +108,7 @@ def pets():
             age = request.form["age"]
             breed = request.form["breed"]
             gender = request.form["gender"]
-            is_adopted = request.form["is_adopted"]
+            is_adopted = 0
 
             # if pet does not have a foster
             if foster_id == "0":
@@ -186,28 +186,28 @@ def edit_pet(pet_id):
             age = request.form["age"]
             breed = request.form["breed"]
             gender = request.form["gender"]
-            is_adopted = request.form["is_adopted"]
+            
 
             # edit pet if pet doesn't have a foster
             if foster_id == "0":
-                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = NULL, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
+                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = NULL, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s WHERE Pets.pet_id = %s"
                 cur = mysql.connection.cursor()
                 cur.execute(query, (shelter_id, type, weight, is_kid_friendly,
-                            name, age, breed, gender, is_adopted, pet_id))
+                            name, age, breed, gender, pet_id))
                 mysql.connection.commit()
             
             elif breed == "":
-                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = NULL, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
+                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = NULL, gender = %s WHERE Pets.pet_id = %s"
                 cur = mysql.connection.cursor()
                 cur.execute(query, (shelter_id, foster_id, type, weight,
-                            is_kid_friendly, name, age, gender, is_adopted))
+                            is_kid_friendly, name, age, gender))
                 mysql.connection.commit()
 
             else:
-                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
+                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = %s, gender = %s WHERE Pets.pet_id = %s"
                 cur = mysql.connection.cursor()
                 cur.execute(query, (shelter_id, foster_id, type, weight,
-                            is_kid_friendly, name, age, breed, gender, is_adopted, pet_id))
+                            is_kid_friendly, name, age, breed, gender, pet_id))
                 mysql.connection.commit()
 
             return redirect("/pets")
@@ -547,8 +547,9 @@ def adoption_records():
         cur.execute(query2)
         adopter_data = cur.fetchall()
 
-        # query to get pet type, name, and id for display
+        # query to get pet type, name, and id for display, only display pets without adoption record
         query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
+        WHERE NOT EXISTS (SELECT * FROM Adoption_records WHERE Adoption_records.pet_id = Pets.pet_id)
         ORDER BY Pets.type ASC"""
         cur = mysql.connection.cursor()
         cur.execute(query3)
@@ -562,6 +563,22 @@ def adoption_records():
             pet_id = request.form["pet"]
             date = request.form["adoption_date"]
             was_returned = request.form["returned"]
+            adopted = 1
+            returned = 0
+
+            # if pet was adopted (not returned) update Pets.is_adopted (true)
+            if was_returned == "0":
+                query = "UPDATE Pets SET Pets.is_adopted = %s WHERE Pets.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (adopted, pet_id))
+                mysql.connection.commit()
+            
+            # if pet was returned, update Pets.is_adopted (false)
+            elif was_returned == "1":
+                query = "UPDATE Pets SET Pets.is_adopted = %s WHERE Pets.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (returned, pet_id))
+                mysql.connection.commit()
 
             query = "INSERT INTO Adoption_records (pet_id, adopter_id, date, was_returned) VALUES (%s, %s, %s, %s)"
             cur = mysql.connection.cursor()
@@ -621,6 +638,20 @@ def edit_adoption_record(adoption_num):
             pet_id = request.form["pet"]
             date = request.form["adoption_date"]
             was_returned = request.form["returned"]
+            adopted = 1
+            returned = 0
+
+            if was_returned == "0":
+                query = "UPDATE Pets SET Pets.is_adopted = %s WHERE Pets.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (adopted, pet_id))
+                mysql.connection.commit()
+            
+            elif was_returned == "1":
+                query = "UPDATE Pets SET Pets.is_adopted = %s WHERE Pets.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (returned, pet_id))
+                mysql.connection.commit()
 
             query = """UPDATE Adoption_records SET Adoption_records.adopter_id = %s, Adoption_records.pet_id = %s, Adoption_records.date = %s, 
             Adoption_records.was_returned = %s WHERE Adoption_records.adoption_num = %s"""
