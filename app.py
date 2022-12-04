@@ -117,6 +117,14 @@ def pets():
                 cur.execute(query, (shelter_id, type, weight,
                             is_kid_friendly, name, age, breed, gender, is_adopted))
                 mysql.connection.commit()
+            
+            elif breed == "":
+                query = "INSERT INTO Pets (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, foster_id, type, weight,
+                            is_kid_friendly, name, age, gender, is_adopted))
+                mysql.connection.commit()
+            
 
             else:
                 query = "INSERT INTO Pets (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, breed, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -186,6 +194,13 @@ def edit_pet(pet_id):
                 cur = mysql.connection.cursor()
                 cur.execute(query, (shelter_id, type, weight, is_kid_friendly,
                             name, age, breed, gender, is_adopted, pet_id))
+                mysql.connection.commit()
+            
+            elif breed == "":
+                query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = NULL, gender = %s, is_adopted = %s WHERE Pets.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, foster_id, type, weight,
+                            is_kid_friendly, name, age, gender, is_adopted))
                 mysql.connection.commit()
 
             else:
