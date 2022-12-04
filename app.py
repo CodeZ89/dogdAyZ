@@ -75,7 +75,7 @@ def pets():
         cur.execute(query3)
         foster_data = cur.fetchall()
 
-        # query to show adopted pets
+        # query to show available pets
         query4 = """SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, 
         Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets 
         JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id 
@@ -85,7 +85,7 @@ def pets():
         cur.execute(query4)
         available_data = cur.fetchall()
 
-        # query to get available pets
+        # query to get adopted pets
         query5 = """SELECT Pets.pet_id, Shelters.name AS Shelter, Fosters.name AS Foster, type AS Type, weight AS Weight, is_kid_friendly AS KidFriendly, 
         Pets.name AS Name, age AS Age, breed AS Breed, gender AS Gender, is_adopted AS Adopted FROM Pets 
         JOIN Shelters ON Pets.shelter_id = Shelters.shelter_id 
