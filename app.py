@@ -466,10 +466,17 @@ def foster_shelters():
             shelter_id = request.form["shelter"]
             foster_id = request.form["foster"]
 
-            query = "INSERT INTO Foster_shelters (shelter_id, foster_id) VALUES (%s, %s)"
+            # checks to see if foster shelter relationship already exists, only adds if it doesn't (avoids duplicates)
+            query_check = "SELECT * FROM Foster_shelters WHERE Foster_shelters.shelter_id = %s AND Foster_shelters.foster_id = %s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (shelter_id, foster_id))
-            mysql.connection.commit()
+            cur.execute(query_check, (shelter_id, foster_id))
+            foster_shelter = cur.fetchall()
+
+            if len(foster_shelter) == 0:
+                query = "INSERT INTO Foster_shelters (shelter_id, foster_id) VALUES (%s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, foster_id))
+                mysql.connection.commit()
 
         return redirect("/foster_shelters")
 
