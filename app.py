@@ -527,10 +527,17 @@ def edit_foster_shelter(foster_shelter_id):
             shelter_id = request.form["shelter"]
             foster_id = request.form["foster"]
 
-            query = "UPDATE Foster_shelters SET Foster_shelters.shelter_id = %s, Foster_shelters.foster_id = %s WHERE Foster_shelters.foster_shelter_id = %s"
+            # checks to see if foster shelter relationship already exists, only allows edit if it doesn't (avoids duplicates)
+            query_check = "SELECT * FROM Foster_shelters WHERE Foster_shelters.shelter_id = %s AND Foster_shelters.foster_id = %s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (shelter_id, foster_id, foster_shelter_id))
-            mysql.connection.commit()
+            cur.execute(query_check, (shelter_id, foster_id))
+            foster_shelter = cur.fetchall()
+
+            if len(foster_shelter) == 0:
+                query = "UPDATE Foster_shelters SET Foster_shelters.shelter_id = %s, Foster_shelters.foster_id = %s WHERE Foster_shelters.foster_shelter_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (shelter_id, foster_id, foster_shelter_id))
+                mysql.connection.commit()
 
             return redirect("/foster_shelters")
 
