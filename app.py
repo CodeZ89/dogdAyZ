@@ -554,9 +554,8 @@ def adoption_records():
         cur.execute(query2)
         adopter_data = cur.fetchall()
 
-        # query to get pet type, name, and id for display, only display pets without adoption record
+        # query to get pet type, name, and id for display
         query3 = """SELECT Pets.pet_id, CONCAT(Pets.type, ', ', 'Name: ', Pets.name, ', ID: ', Pets.pet_id ) as Pet from Pets
-        WHERE NOT EXISTS (SELECT * FROM Adoption_records WHERE Adoption_records.pet_id = Pets.pet_id)
         ORDER BY Pets.type ASC"""
         cur = mysql.connection.cursor()
         cur.execute(query3)
@@ -572,6 +571,18 @@ def adoption_records():
             was_returned = request.form["returned"]
             adopted = 1
             returned = 0
+
+            # check if pet already has adoption records, set previous records to returned
+            query_check = "SELECT * FROM Adoption_records WHERE Adoption_records.pet_id = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query_check, (pet_id,))
+            pet_records = cur.fetchall()
+
+            if len(pet_records) > 0:
+                query = "UPDATE Adoption_records SET Adoption_records.was_returned = 1 WHERE Adoption_records.pet_id = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (pet_id,))
+                mysql.connection.commit()
 
             # if pet was adopted (not returned) update Pets.is_adopted (true)
             if was_returned == "0":
