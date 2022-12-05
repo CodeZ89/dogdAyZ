@@ -1,4 +1,4 @@
-# Flask Routes and functions influenced by Source: https://github.com/osu-cs340-ecampus/flask-starter-app
+# Flask Routes and functions adapted from and influenced by Source: https://github.com/osu-cs340-ecampus/flask-starter-app and OSU ed discussions 10/26/22 through 12/5/22
 
 import os
 from flask import Flask, render_template, json, redirect
@@ -65,11 +65,13 @@ def pets():
         cur.execute(query)
         data = cur.fetchall()
 
+        # dropdown
         query2 = "SELECT Shelters.shelter_id, Shelters.name AS Shelter from Shelters ORDER BY Shelters.name ASC;"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         shelter_data = cur.fetchall()
 
+        # dropdown
         query3 = "SELECT Fosters.foster_id, Fosters.name AS Foster FROM Fosters"
         cur = mysql.connection.cursor()
         cur.execute(query3)
@@ -118,6 +120,7 @@ def pets():
                             is_kid_friendly, name, age, breed, gender, is_adopted))
                 mysql.connection.commit()
             
+            # if pet does not have breed
             elif breed == "":
                 query = "INSERT INTO Pets (shelter_id, foster_id, type, weight, is_kid_friendly, name, age, gender, is_adopted) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cur = mysql.connection.cursor()
@@ -167,6 +170,7 @@ def edit_pet(pet_id):
         cur.execute(query3)
         foster_data = cur.fetchall()
 
+        # query to get unaliased data for edit page
         query4 = "SELECT * FROM Pets WHERE pet_id = %s" % (pet_id)
         cur = mysql.connection.cursor()
         cur.execute(query4)
@@ -196,6 +200,7 @@ def edit_pet(pet_id):
                             name, age, breed, gender, pet_id))
                 mysql.connection.commit()
             
+            # edit pet if pet doesn't have a breed
             elif breed == "":
                 query = "UPDATE Pets SET Pets.shelter_id = %s, Pets.foster_id = %s, type = %s, weight = %s, is_kid_friendly = %s, Pets.name = %s, age = %s, breed = NULL, gender = %s WHERE Pets.pet_id = %s"
                 cur = mysql.connection.cursor()
@@ -381,6 +386,7 @@ def shelters():
 
         return redirect("/shelters")
 
+    # automatically count number of pets in shelter and number of pets in foster home associated with shelter
     if request.method == "GET":
         query = """SELECT Shelters.shelter_id, Shelters.city, Shelters.state, Shelters.phone_number, Shelters.name, 
         COUNT(Pets.pet_id) AS number_of_pets,
@@ -666,12 +672,14 @@ def edit_adoption_record(adoption_num):
             adopted = 1
             returned = 0
 
+            # if pet adopted, update pet availability status on pets page
             if was_returned == "0":
                 query = "UPDATE Pets SET Pets.is_adopted = %s WHERE Pets.pet_id = %s"
                 cur = mysql.connection.cursor()
                 cur.execute(query, (adopted, pet_id))
                 mysql.connection.commit()
             
+            # if pet returned, update pet availability status on pets page
             elif was_returned == "1":
                 query = "UPDATE Pets SET Pets.is_adopted = %s WHERE Pets.pet_id = %s"
                 cur = mysql.connection.cursor()
